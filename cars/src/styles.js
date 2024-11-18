@@ -39,8 +39,7 @@ export const SearchBar = styled.div`
   padding: 0 20px;
 
   & > div {
-    flex: 1;
-    min-width: 200px;
+    width: 200px;
     position: relative;
   }
 
@@ -51,6 +50,7 @@ export const SearchBar = styled.div`
     padding: 0 15px;
 
     & > div {
+      width: 100%;
       min-width: unset;
     }
   }
@@ -66,6 +66,7 @@ export const DateInput = styled.input`
   color: #333333;
   transition: all 0.3s ease;
   cursor: pointer;
+  box-sizing: border-box;
 
   &::-webkit-calendar-picker-indicator {
     cursor: pointer;
@@ -112,6 +113,22 @@ export const DateInput = styled.input`
     padding: 10px 12px;
     font-size: 13px;
   }
+
+  &::-webkit-datetime-edit-text,
+  &::-webkit-datetime-edit-month-field,
+  &::-webkit-datetime-edit-day-field,
+  &::-webkit-datetime-edit-year-field {
+    color: #666;
+  }
+
+  &:not(:valid)::-webkit-datetime-edit {
+    color: #666;
+  }
+
+  &:focus::-webkit-datetime-edit,
+  &:valid::-webkit-datetime-edit {
+    color: #333333;
+  }
 `;
 
 export const SearchButton = styled.button`
@@ -134,6 +151,11 @@ export const SearchButton = styled.button`
 
   &:active {
     transform: translateY(0);
+  }
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
   }
 
   @media (max-width: 768px) {

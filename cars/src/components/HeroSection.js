@@ -5,13 +5,15 @@ import { HeroSection, SearchBar, DateInput, SearchButton } from "../styles";
 const HeroSectionComponent = () => {
   const [pickupDate, setPickupDate] = useState("");
   const [dropoffDate, setDropoffDate] = useState("");
+  const [pickupFocused, setPickupFocused] = useState(false);
+  const [dropoffFocused, setDropoffFocused] = useState(false);
   const pickupInputRef = useRef(null);
   const dropoffInputRef = useRef(null);
 
   const handlePickupChange = (e) => {
     const selectedDate = e.target.value;
     setPickupDate(selectedDate);
-    
+
     if (dropoffDate && new Date(dropoffDate) < new Date(selectedDate)) {
       setDropoffDate("");
     }
@@ -43,27 +45,48 @@ const HeroSectionComponent = () => {
   return (
     <HeroSection>
       <SearchBar>
-        <div ref={pickupInputRef} onClick={() => handleInputClick(pickupInputRef)}>
+        <div ref={pickupInputRef}>
           <DateInput
-            type="date"
+            type={pickupFocused ? "date" : "text"}
             value={pickupDate}
             onChange={handlePickupChange}
             min={new Date().toISOString().split('T')[0]}
             required
             placeholder="Pick-up Date"
+            onFocus={() => {
+              setPickupFocused(true);
+              handleInputClick(pickupInputRef);
+            }}
+            onBlur={() => {
+              if (!pickupDate) {
+                setPickupFocused(false);
+              }
+            }}
           />
         </div>
-        <div ref={dropoffInputRef} onClick={() => handleInputClick(dropoffInputRef)}>
+        <div ref={dropoffInputRef}>
           <DateInput
-            type="date"
+            type={dropoffFocused ? "date" : "text"}
             value={dropoffDate}
             onChange={handleDropoffChange}
             min={pickupDate || new Date().toISOString().split('T')[0]}
             required
             placeholder="Drop-off Date"
+            onFocus={() => {
+              setDropoffFocused(true);
+              handleInputClick(dropoffInputRef);
+            }}
+            onBlur={() => {
+              if (!dropoffDate) {
+                setDropoffFocused(false);
+              }
+            }}
           />
         </div>
-        <SearchButton onClick={handleSearch}>
+        <SearchButton
+          onClick={handleSearch}
+          disabled={!pickupDate || !dropoffDate}
+        >
           Find Your Car
         </SearchButton>
         <SearchButton onClick={handleAvailableToday} isSecondary>

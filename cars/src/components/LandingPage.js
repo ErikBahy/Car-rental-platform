@@ -69,7 +69,7 @@ const StatsContainer = styled(motion.div)`
     flex-wrap: wrap;
     gap: 20px;
     margin-top: 50px;
-    margin-bottom: 60px;
+    margin-bottom: 30px;
   }
 `;
 
@@ -103,7 +103,7 @@ const ScrollPrompt = styled.div`
   transition: opacity 0.3s ease;
   
   @media (max-width: 768px) {
-    bottom: 70px;
+    display: none;
   }
 `;
 
@@ -128,6 +128,9 @@ const Background = styled.div`
     top: 0;
     left: 0;
     opacity: ${props => props.opacity};
+    filter: blur(${props => props.blur}px);
+    transform: scale(1.1);
+    transition: filter 0.3s ease;
   }
 
   &::before {
@@ -137,14 +140,8 @@ const Background = styled.div`
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.5);
+    background-color: rgba(0, 0, 0, ${props => 0.5 + (1 - props.opacity) * 0.3});
     transition: background-color 0.3s ease;
-  }
-
-  @media (min-width: 768px) {
-    &::before {
-      background-color: rgba(0, 0, 0, 0.83);
-    }
   }
 `;
 
@@ -173,6 +170,7 @@ const HomePage = () => {
   const [arrowOpacity, setArrowOpacity] = useState(1);
   const [isDesktop, setIsDesktop] = useState(window.innerWidth > 768);
   const navigate = useNavigate();
+  const [blur, setBlur] = useState(0);
 
   useEffect(() => {
     const handleResize = () => {
@@ -201,11 +199,16 @@ const HomePage = () => {
 
   const handleScroll = () => {
     const scrollY = window.scrollY;
-    const newOpacity = Math.min(0.5, Math.max(1 - (scrollY / (window.innerHeight * 0.6)), 0));
-    setOpacity(newOpacity);
+    const fadeStart = window.innerHeight * 0.3;
+    const fadeEnd = window.innerHeight * 0.8;
 
-    const newArrowOpacity = Math.max(1 - (scrollY / (window.innerHeight * 0.3)), 0);
-    setArrowOpacity(newArrowOpacity);
+    const opacity = Math.min(0.5, Math.max(0.3,
+      0.5 - (scrollY - fadeStart) / (fadeEnd - fadeStart)
+    ));
+    const blur = Math.min(20, (scrollY / window.innerHeight) * 15);
+
+    setOpacity(opacity);
+    setBlur(blur);
   };
 
   useEffect(() => {
@@ -223,7 +226,7 @@ const HomePage = () => {
 
   return (
     <PageContainer>
-      <Background opacity={opacity}>
+      <Background opacity={opacity} blur={blur}>
         <video
           autoPlay
           muted
@@ -248,8 +251,8 @@ const HomePage = () => {
           animate={{ opacity: 1 }}
           transition={{ duration: 0.8, delay: 0.3 }}
         >
-          Experience Albania in style with our carefully selected fleet. 
-          Whether you're exploring the Albanian Riviera or navigating the streets of Tirana, 
+          Experience Albania in style with our carefully selected fleet.
+          Whether you're exploring the Albanian Riviera or navigating the streets of Tirana,
           we have the perfect vehicle for your journey.
         </Subtitle>
         <HeroSectionComponent />
@@ -271,8 +274,8 @@ const HomePage = () => {
             <div className="label">Local Support</div>
           </StatItem>
         </StatsContainer>
-        <ScrollPrompt 
-          opacity={arrowOpacity} 
+        <ScrollPrompt
+          opacity={arrowOpacity}
           onClick={() => window.scrollTo({ top: window.innerHeight, behavior: 'smooth' })}
         >
           <ArrowAnimation
