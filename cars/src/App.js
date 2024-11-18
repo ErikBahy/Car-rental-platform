@@ -12,12 +12,15 @@ import Navigation from "./components/Navigation";
 const AppContainer = styled.div`
   display: flex;
   flex-direction: column;
-  height: 100vh; /* Full viewport height */
+  min-height: 100vh;
+  overflow-x: hidden;
 `;
 
 const ContentContainer = styled.div`
-  flex-grow: 1;
-  padding-top: 60px; /* Adjust this value based on your navbar height */
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  margin-top: 60px; /* Height of the navbar */
   filter: ${(props) => (props.isMenuOpen ? "blur(8px)" : "none")};
   transition: filter 0.3s ease-in-out;
 

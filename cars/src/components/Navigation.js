@@ -5,13 +5,16 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useSwipeable } from "react-swipeable";
 
 const Nav = styled.nav`
-  background-color: rgba(5, 6, 6, 0.7); /* Dark color for navbar */
+  background-color: rgba(5, 6, 6, 0.7);
   padding: 1rem;
   position: fixed;
   width: 100%;
+  height: 60px;
   top: 0;
   left: 0;
   z-index: 1000;
+  display: flex;
+  align-items: center;
 `;
 
 const MenuButton = styled.button`

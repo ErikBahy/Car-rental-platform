@@ -30,39 +30,124 @@ export const OverlayText = styled.h1`
 
 export const SearchBar = styled.div`
   display: flex;
-  gap: 10px;
+  gap: 15px;
   margin-top: 20px;
+  flex-wrap: wrap;
+  justify-content: center;
+  width: 100%;
+  max-width: 1000px;
+  padding: 0 20px;
 
-  input {
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
+  & > div {
     flex: 1;
-  }
-
-  button {
-    padding: 10px 20px;
-    background-color: #ffd700;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    color: #333333;
-    font-weight: bold;
+    min-width: 200px;
+    position: relative;
   }
 
   @media (max-width: 768px) {
     flex-direction: column;
-    width: 100%;
+    width: 90%;
+    gap: 10px;
+    padding: 0 15px;
 
-    input {
-      margin-bottom: 10px;
-    }
-
-    button {
-      width: 100%;
+    & > div {
+      min-width: unset;
     }
   }
 `;
+
+export const DateInput = styled.input`
+  width: 100%;
+  padding: 15px 20px;
+  font-size: 16px;
+  border: 2px solid #ffd700;
+  border-radius: 8px;
+  background-color: rgba(255, 255, 255, 0.9);
+  color: #333333;
+  transition: all 0.3s ease;
+  cursor: pointer;
+
+  &::-webkit-calendar-picker-indicator {
+    cursor: pointer;
+    padding: 5px;
+    filter: invert(0.8) sepia(100%) saturate(1000%) hue-rotate(0deg);
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+
+  &:hover, &:focus {
+    background-color: white;
+    border-color: #ffed4a;
+    box-shadow: 0 0 10px rgba(255, 215, 0, 0.3);
+  }
+
+  &::placeholder {
+    color: #666;
+  }
+
+  @media (max-width: 768px) {
+    width: 100%;
+    margin-bottom: 10px;
+    font-size: 14px;
+    padding: 12px 15px;
+    
+    &::-webkit-calendar-picker-indicator {
+      scale: 0.8;
+      right: 8px;
+    }
+    
+    &::-webkit-datetime-edit {
+      font-size: 14px;
+    }
+    
+    &::-webkit-calendar-picker {
+      width: 80vw;
+      max-height: 300px;
+    }
+  }
+
+  @media (max-width: 480px) {
+    padding: 10px 12px;
+    font-size: 13px;
+  }
+`;
+
+export const SearchButton = styled.button`
+  padding: 15px 30px;
+  font-size: 16px;
+  font-weight: bold;
+  background-color: ${props => props.isSecondary ? 'rgba(255, 215, 0, 0.8)' : '#ffd700'};
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  color: #333333;
+  transition: all 0.3s ease;
+  min-width: 180px;
+
+  &:hover {
+    background-color: ${props => props.isSecondary ? '#ffd700' : '#ffed4a'};
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(255, 215, 0, 0.3);
+  }
+
+  &:active {
+    transform: translateY(0);
+  }
+
+  @media (max-width: 768px) {
+    width: 100%;
+    padding: 12px 20px;
+    font-size: 14px;
+  }
+
+  @media (max-width: 480px) {
+    padding: 10px 15px;
+    font-size: 13px;
+  }
+`;
+
 export const CarDisplayWrapper = styled.div`
   display: flex;
   align-items: center;
