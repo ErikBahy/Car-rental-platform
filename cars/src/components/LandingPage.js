@@ -15,20 +15,26 @@ const PageContainer = styled.div`
 `;
 
 const HeroContent = styled.div`
-  min-height: calc(100vh - 60px);
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: flex-start;
-  padding: 40px 20px;
+  padding: 20px;
   text-align: center;
   position: relative;
+  height: calc(100vh - 60px);
+  
+  @media (max-width: 768px) {
+    height: 100vh;
+    padding-top: 40px;
+    justify-content: flex-start;
+  }
 `;
 
 const MainTitle = styled(motion.h1)`
   font-size: 4rem;
   color: #ffd700;
-  margin-bottom: 20px;
+  margin-bottom: 15px;
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
   
   @media (max-width: 768px) {
@@ -39,7 +45,7 @@ const MainTitle = styled(motion.h1)`
 const Subtitle = styled.p`
   font-size: 1.5rem;
   color: white;
-  margin-bottom: 40px;
+  margin-bottom: 30px;
   max-width: 600px;
   line-height: 1.4;
   text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
@@ -52,13 +58,18 @@ const Subtitle = styled.p`
 const StatsContainer = styled(motion.div)`
   display: flex;
   justify-content: center;
-  gap: 40px;
-  margin-top: 20px;
-  margin-bottom: 60px;
+  gap: 30px;
+  position: absolute;
+  bottom: 80px;
+  right: 40px;
+  margin: 0;
   
   @media (max-width: 768px) {
+    position: static;
     flex-wrap: wrap;
     gap: 20px;
+    margin-top: 50px;
+    margin-bottom: 60px;
   }
 `;
 
@@ -66,15 +77,13 @@ const StatItem = styled.div`
   text-align: center;
   color: #ffd700;
   
-  .number {
-    font-size: 2.5rem;
-    font-weight: bold;
-    margin-bottom: 5px;
-  }
-  
-  .label {
-    font-size: 1rem;
-    color: white;
+  @media (min-width: 768px) {
+    .number {
+      font-size: 2rem;
+    }
+    .label {
+      font-size: 0.85rem;
+    }
   }
 `;
 
@@ -84,30 +93,22 @@ const ScrollPrompt = styled.div`
   left: 50%;
   transform: translateX(-50%);
   color: #ffd700;
-  font-size: 1.1rem;
+  font-size: 1rem;
   display: flex;
   flex-direction: column;
   align-items: center;
   cursor: pointer;
   z-index: 2;
+  opacity: ${props => props.opacity};
+  transition: opacity 0.3s ease;
   
-  span {
-    margin-bottom: 5px;
+  @media (max-width: 768px) {
+    bottom: 70px;
   }
+`;
 
-  animation: bounce 2s infinite;
-  
-  @keyframes bounce {
-    0%, 20%, 50%, 80%, 100% {
-      transform: translateX(-50%) translateY(0);
-    }
-    40% {
-      transform: translateX(-50%) translateY(-10px);
-    }
-    60% {
-      transform: translateX(-50%) translateY(-5px);
-    }
-  }
+const ArrowAnimation = styled(motion.span)`
+  font-size: 2rem;
 `;
 
 const Background = styled.div`
@@ -126,7 +127,7 @@ const Background = styled.div`
     position: absolute;
     top: 0;
     left: 0;
-    opacity: 0.4;
+    opacity: ${props => props.opacity};
   }
 
   &::before {
@@ -168,7 +169,8 @@ const PromptText = styled.div`
 
 const HomePage = () => {
   const [cars, setCars] = useState([]);
-  const [opacity, setOpacity] = useState(1);
+  const [opacity, setOpacity] = useState(0.5);
+  const [arrowOpacity, setArrowOpacity] = useState(1);
   const [isDesktop, setIsDesktop] = useState(window.innerWidth > 768);
   const navigate = useNavigate();
 
@@ -199,9 +201,11 @@ const HomePage = () => {
 
   const handleScroll = () => {
     const scrollY = window.scrollY;
-    const windowHeight = window.innerHeight;
-    const newOpacity = Math.max(1 - scrollY / windowHeight, 0);
+    const newOpacity = Math.min(0.5, Math.max(1 - (scrollY / (window.innerHeight * 0.6)), 0));
     setOpacity(newOpacity);
+
+    const newArrowOpacity = Math.max(1 - (scrollY / (window.innerHeight * 0.3)), 0);
+    setArrowOpacity(newArrowOpacity);
   };
 
   useEffect(() => {
@@ -236,7 +240,7 @@ const HomePage = () => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
         >
-          Premium Car Rental Experience
+          Premium Car Rental in Albania
         </MainTitle>
         <Subtitle
           as={motion.p}
@@ -244,43 +248,58 @@ const HomePage = () => {
           animate={{ opacity: 1 }}
           transition={{ duration: 0.8, delay: 0.3 }}
         >
-          Discover our exclusive collection of luxury vehicles for your perfect journey.
-          From sports cars to elegant sedans, we have the perfect match for you.
+          Experience Albania in style with our carefully selected fleet. 
+          Whether you're exploring the Albanian Riviera or navigating the streets of Tirana, 
+          we have the perfect vehicle for your journey.
         </Subtitle>
         <HeroSectionComponent />
         <StatsContainer
-          as={motion.div}
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.6 }}
         >
           <StatItem>
-            <div className="number">50+</div>
-            <div className="label">Luxury Cars</div>
+            <div className="number">15+</div>
+            <div className="label">Quality Vehicles</div>
           </StatItem>
           <StatItem>
-            <div className="number">1000+</div>
+            <div className="number">500+</div>
             <div className="label">Happy Clients</div>
           </StatItem>
           <StatItem>
             <div className="number">24/7</div>
-            <div className="label">Support</div>
+            <div className="label">Local Support</div>
           </StatItem>
         </StatsContainer>
-        <ScrollPrompt onClick={() => window.scrollTo({ top: window.innerHeight, behavior: 'smooth' })}>
-          <span>Discover Our Fleet</span>
-          <span style={{ fontSize: '2rem' }}>↓</span>
+        <ScrollPrompt 
+          opacity={arrowOpacity} 
+          onClick={() => window.scrollTo({ top: window.innerHeight, behavior: 'smooth' })}
+        >
+          <ArrowAnimation
+            animate={{ y: [0, 10, 0] }}
+            transition={{
+              duration: 1.5,
+              repeat: Infinity,
+              ease: "easeInOut"
+            }}
+          >
+            ↓
+          </ArrowAnimation>
         </ScrollPrompt>
       </HeroContent>
       <ContentWrapper>
         {/* <PromptText>
           Our client's most preferred cars. Click on a car to view details
         </PromptText> */}
-        {/* {isDesktop ? (
-          <DesktopCarDisplay cars={favouriteCars} onClick={handleCarClick} />
+        {isDesktop ? (
+          <>
+            <DesktopCarDisplay cars={favouriteCars} onClick={handleCarClick} />
+            <DesktopCarDisplay cars={favouriteCars} onClick={handleCarClick} />
+            <DesktopCarDisplay cars={favouriteCars} onClick={handleCarClick} />
+          </>
         ) : (
           <CarDisplay cars={favouriteCars} onClick={handleCarClick} />
-        )} */}
+        )}
       </ContentWrapper>
     </PageContainer>
   );
