@@ -6,6 +6,7 @@ import HeroSectionComponent from "./HeroSection";
 import CarDisplay from "./CarDisplay";
 import DesktopCarDisplay from "./DesktopCarDisplay";
 import { motion } from "framer-motion";
+import SpecialOffer from './SpecialOffer';
 
 const PageContainer = styled.div`
   flex: 1;
@@ -25,7 +26,8 @@ const HeroContent = styled.div`
   height: calc(100vh - 60px);
   
   @media (max-width: 768px) {
-    height: 100vh;
+    height: auto;
+    min-height: 100vh;
     padding-top: 40px;
     justify-content: flex-start;
   }
@@ -68,8 +70,13 @@ const StatsContainer = styled(motion.div)`
     position: static;
     flex-wrap: wrap;
     gap: 20px;
-    margin-top: 50px;
-    margin-bottom: 30px;
+    margin: 30px 0 50px;
+    padding: 0 20px;
+  }
+
+  @media (max-width: 375px) {
+    margin: 20px 0 70px;
+    gap: 15px;
   }
 `;
 
@@ -151,17 +158,23 @@ const ContentWrapper = styled.div`
   flex-direction: column;
   align-items: center;
   width: 100%;
+  margin-top: 20px;
+
+  @media (max-width: 768px) {
+    margin-top: 0;
+  }
 `;
 
 const PromptText = styled.div`
   text-align: center;
-  margin-top: 10px;
+  margin: 20px 0;
   font-size: 1.2em;
   color: #ffd700;
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
   background: rgba(0, 0, 0, 0.3);
-  padding: 5px 10px;
+  padding: 10px 20px;
   border-radius: 5px;
+  z-index: 1;
 `;
 
 const HomePage = () => {
@@ -291,18 +304,15 @@ const HomePage = () => {
         </ScrollPrompt>
       </HeroContent>
       <ContentWrapper>
-        {/* <PromptText>
-          Our client's most preferred cars. Click on a car to view details
-        </PromptText> */}
+        <PromptText>
+          Our Clients' Most Popular Choices
+        </PromptText>
         {isDesktop ? (
-          <>
-            <DesktopCarDisplay cars={favouriteCars} onClick={handleCarClick} />
-            <DesktopCarDisplay cars={favouriteCars} onClick={handleCarClick} />
-            <DesktopCarDisplay cars={favouriteCars} onClick={handleCarClick} />
-          </>
+          <DesktopCarDisplay cars={favouriteCars} onClick={handleCarClick} />
         ) : (
           <CarDisplay cars={favouriteCars} onClick={handleCarClick} />
         )}
+      <SpecialOffer />
       </ContentWrapper>
     </PageContainer>
   );

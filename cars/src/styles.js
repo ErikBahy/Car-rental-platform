@@ -45,13 +45,14 @@ export const SearchBar = styled.div`
 
   @media (max-width: 768px) {
     flex-direction: column;
-    width: 90%;
+    width: 100%;
     gap: 10px;
     padding: 0 15px;
+    align-items: center;
 
     & > div {
       width: 100%;
-      min-width: unset;
+      max-width: 400px;
     }
   }
 `;
@@ -90,7 +91,7 @@ export const DateInput = styled.input`
 
   @media (max-width: 768px) {
     width: 100%;
-    margin-bottom: 10px;
+    margin-bottom: 0;
     font-size: 14px;
     padding: 12px 15px;
     
@@ -160,8 +161,10 @@ export const SearchButton = styled.button`
 
   @media (max-width: 768px) {
     width: 100%;
+    max-width: 400px;
     padding: 12px 20px;
     font-size: 14px;
+    min-width: unset;
   }
 
   @media (max-width: 480px) {
