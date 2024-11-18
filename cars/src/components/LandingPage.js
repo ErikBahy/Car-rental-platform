@@ -125,7 +125,7 @@ const Background = styled.div`
   width: 100%;
   height: 100%;
   z-index: -1;
-  background-color: rgba(0, 0, 0, 0.1);
+  background-color: black;
   
   video {
     width: 100%;
@@ -137,7 +137,7 @@ const Background = styled.div`
     opacity: ${props => props.opacity};
     filter: blur(${props => props.blur}px);
     transform: scale(1.1);
-    transition: filter 0.3s ease;
+    transition: opacity 0.3s ease;
   }
 
   &::before {
@@ -147,7 +147,7 @@ const Background = styled.div`
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, ${props => 0.5 + (1 - props.opacity) * 0.3});
+    background-color: rgba(0, 0, 0, ${props => 0.5 + (1 - props.opacity) * 0.5});
     transition: background-color 0.3s ease;
   }
 `;
@@ -215,9 +215,10 @@ const HomePage = () => {
     const fadeStart = window.innerHeight * 0.3;
     const fadeEnd = window.innerHeight * 0.8;
 
-    const opacity = Math.min(0.5, Math.max(0.3,
-      0.5 - (scrollY - fadeStart) / (fadeEnd - fadeStart)
+    const opacity = Math.max(0, Math.min(0.5, 
+      0.5 - (scrollY - fadeStart) / (fadeEnd - fadeStart) * 0.5
     ));
+    
     const blur = Math.min(20, (scrollY / window.innerHeight) * 15);
 
     setOpacity(opacity);
@@ -307,12 +308,8 @@ const HomePage = () => {
         <PromptText>
           Our Clients' Most Popular Choices
         </PromptText>
-        {isDesktop ? (
-          <DesktopCarDisplay cars={favouriteCars} onClick={handleCarClick} />
-        ) : (
-          <CarDisplay cars={favouriteCars} onClick={handleCarClick} />
-        )}
-      <SpecialOffer />
+        <DesktopCarDisplay cars={favouriteCars} onClick={handleCarClick} />
+        <SpecialOffer />
       </ContentWrapper>
     </PageContainer>
   );

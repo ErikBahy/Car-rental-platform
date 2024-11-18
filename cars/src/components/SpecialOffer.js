@@ -5,12 +5,10 @@ import { motion } from "framer-motion";
 const OfferSection = styled.div`
   position: relative;
   width: 100%;
-  min-height: 400px;
+  min-height: 500px;
   display: flex;
   align-items: center;
-  justify-content: center;
-  overflow: hidden;
-  padding: 60px 20px;
+  padding: 60px;
   
   &::before {
     content: '';
@@ -22,24 +20,28 @@ const OfferSection = styled.div`
     background: linear-gradient(
       rgba(0, 0, 0, 0.7),
       rgba(0, 0, 0, 0.5)
-    ), url('/luxurycar.jpg');
+    ), url('/luxurycar1.jpg');
     background-size: cover;
     background-position: center;
     background-attachment: fixed;
     z-index: -1;
   }
+  
+  @media (max-width: 768px) {
+    padding: 30px 20px;
+  }
 `;
 
 const ContentContainer = styled(motion.div)`
-  max-width: 1200px;
-  width: 100%;
+  max-width: 600px;
   color: white;
-  text-align: center;
+  text-align: left;
   padding: 40px;
-  background: rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(10px);
-  border-radius: 20px;
-  border: 1px solid rgba(255, 215, 0, 0.3);
+  
+  @media (max-width: 768px) {
+    max-width: 100%;
+    padding: 20px;
+  }
 `;
 
 const Title = styled.h2`
@@ -104,14 +106,14 @@ const SpecialOffer = () => {
   return (
     <OfferSection>
       <ContentContainer
-        initial={{ opacity: 0, y: 50 }}
-        whileInView={{ opacity: 1, y: 0 }}
+        initial={{ opacity: 0, x: -50 }}
+        whileInView={{ opacity: 1, x: 0 }}
         viewport={{ once: true }}
         transition={{ duration: 0.8 }}
       >
         <Title>Extended Stay Special Offer</Title>
         <Description>
-          Experience luxury for longer and save more. Book any of our premium vehicles
+          Experience luxury for longer and save more. Book any of our vehicles
           for 10 days or more and unlock exclusive benefits and substantial savings
           on your rental.
         </Description>
@@ -126,7 +128,7 @@ const SpecialOffer = () => {
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
         >
-          Learn More
+          Explore Our Fleet
         </LearnMoreButton>
       </ContentContainer>
     </OfferSection>

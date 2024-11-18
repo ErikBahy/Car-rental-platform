@@ -1,5 +1,5 @@
 import React from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { motion, AnimatePresence } from "framer-motion";
 import { useSwipeable } from "react-swipeable";
@@ -15,18 +15,19 @@ const Nav = styled.nav`
   z-index: 1000;
   display: flex;
   align-items: center;
+  justify-content: space-between;
 `;
 
 const MenuButton = styled.button`
   display: block;
-  width: 100%;
   background: none;
   border: none;
   font-size: 1.3rem;
-  color: #ffd700; /* Text color */
+  color: #ffd700;
   text-align: left;
   padding: 0.5rem 0;
   z-index: 1001;
+  width: auto;
 
   @media (min-width: 768px) {
     display: none;
@@ -108,6 +109,26 @@ const NavLink = styled(Link)`
   }
 `;
 
+const FleetButton = styled.button`
+  display: none;
+  
+  @media (max-width: 768px) {
+    display: flex;
+    align-items: center;
+    background: none;
+    border: none;
+    color: #ffd700;
+    font-size: 1.3rem;
+    cursor: pointer;
+    z-index: 1001;
+    
+    &::after {
+      content: '→';
+      margin-left: 5px;
+    }
+  }
+`;
+
 const drawerVariants = {
   open: {
     x: 0,
@@ -145,6 +166,7 @@ function Navigation({ isOpen, setIsOpen }) {
   const toggleMenu = () => setIsOpen(!isOpen);
   const isMobile = window.innerWidth < 768;
   const location = useLocation();
+  const navigate = useNavigate();
 
   const swipeHandlers = useSwipeable({
     onSwipedLeft: () => setIsOpen(false),
@@ -152,9 +174,17 @@ function Navigation({ isOpen, setIsOpen }) {
     trackMouse: true,
   });
 
+  const handleFleetClick = (e) => {
+    e.stopPropagation();
+    navigate('/our-cars');
+  };
+
   return (
     <Nav>
       <MenuButton onClick={toggleMenu}>☰ Menu</MenuButton>
+      <FleetButton onClick={handleFleetClick}>
+        Fleet
+      </FleetButton>
       <AnimatePresence>
         {(isOpen || !isMobile) && (
           <NavContent
