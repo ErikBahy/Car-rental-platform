@@ -8,6 +8,7 @@ import CarDetailsPage from "./components/CarsPage";
 import ReservationsManagementPage from "./components/ReservationsManagementPage";
 import CarsManagementPage from "./components/CarsManagementPage";
 import Navigation from "./components/Navigation";
+import Footer from "./components/Footer";
 
 const AppContainer = styled.div`
   display: flex;
@@ -42,13 +43,13 @@ function App() {
             <Route path="/" element={<LandingPage />} />
             <Route path="/our-cars" element={<CarDetailsPage />} />
             <Route path="/car/:id" element={<Car />} />
-            {/* <Route path="/cars" element={<CarDetailsPage />} /> */}
             <Route
               path="/reservations"
               element={<ReservationsManagementPage />}
             />
             <Route path="/manage-cars" element={<CarsManagementPage />} />
           </Routes>
+          <Footer />
         </ContentContainer>
       </AppContainer>
     </Router>

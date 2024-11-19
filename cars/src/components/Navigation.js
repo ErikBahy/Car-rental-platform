@@ -182,9 +182,9 @@ function Navigation({ isOpen, setIsOpen }) {
   return (
     <Nav>
       <MenuButton onClick={toggleMenu}>☰ Menu</MenuButton>
-      <FleetButton onClick={handleFleetClick}>
+      {!isOpen && <FleetButton onClick={handleFleetClick}>
         Fleet
-      </FleetButton>
+      </FleetButton>}
       <AnimatePresence>
         {(isOpen || !isMobile) && (
           <NavContent

@@ -7,6 +7,8 @@ import CarDisplay from "./CarDisplay";
 import DesktopCarDisplay from "./DesktopCarDisplay";
 import { motion } from "framer-motion";
 import SpecialOffer from './SpecialOffer';
+import CustomerReviews from './CustomerReviews';
+import WhyChooseUs from './WhyChooseUs';
 
 const PageContainer = styled.div`
   flex: 1;
@@ -309,7 +311,9 @@ const HomePage = () => {
           Our Clients' Most Popular Choices
         </PromptText>
         <DesktopCarDisplay cars={favouriteCars} onClick={handleCarClick} />
+        <WhyChooseUs />
         <SpecialOffer />
+        <CustomerReviews />
       </ContentWrapper>
     </PageContainer>
   );
