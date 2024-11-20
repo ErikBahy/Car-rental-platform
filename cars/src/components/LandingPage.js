@@ -311,8 +311,8 @@ const HomePage = () => {
           Our Clients' Most Popular Choices
         </PromptText>
         <DesktopCarDisplay cars={favouriteCars} onClick={handleCarClick} />
-        <WhyChooseUs />
         <SpecialOffer />
+        <WhyChooseUs />
         <CustomerReviews />
       </ContentWrapper>
     </PageContainer>

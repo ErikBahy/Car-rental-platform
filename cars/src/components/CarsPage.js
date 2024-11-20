@@ -3,14 +3,15 @@ import styled from "styled-components";
 import axios from "axios";
 import CarCard from "./CarCard";
 import { motion } from "framer-motion";
-import carBackground from "../assets/rruga.jpeg";
+import Footer from './Footer';
+import showroomImage from '../assets/showroom.jpg';
 
 const PageContainer = styled(motion.div)`
   position: relative;
   min-height: 100vh;
   padding: 20px;
-  overflow-y: auto;
-  z-index: 1;
+  display: flex;
+  flex-direction: column;
 `;
 
 const Background = styled.div`
@@ -19,30 +20,26 @@ const Background = styled.div`
   left: 0;
   width: 100%;
   height: 100%;
-  background-image: url(${carBackground});
+  background-image: url('/showroom2.jpg');
+  background-color: #000;
   background-size: cover;
-  background-position: center;
+  background-position: 30% center;
+  background-repeat: no-repeat;
   background-attachment: fixed;
   z-index: -1;
 
-  &::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(
-      to bottom,
-      rgba(0, 0, 0, 0.8) 0%,
-      rgba(0, 0, 0, 0.6) 100%
-    );
+  @media (max-width: 768px) {
+    background-position: 20% center;
+    background-attachment: scroll;
   }
 `;
 
 const ContentWrapper = styled.div`
-  max-width: 1400px;
+  flex: 1;
   margin: 0 auto;
+  width: 100%;
+  padding-bottom: 60px;
+  position: relative;
 `;
 
 const Header = styled.div`
@@ -64,10 +61,12 @@ const Title = styled.h1`
 
 const CarsGrid = styled(motion.div)`
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-  gap: 30px;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 20px;
   padding: 20px;
   justify-items: center;
+  max-width: 1400px;
+  margin: 0 auto;
 `;
 
 const LoadingState = styled(motion.div)`
@@ -132,6 +131,7 @@ const CarsPage = () => {
           </CarsGrid>
         )}
       </ContentWrapper>
+      {/* <Footer /> */}
     </PageContainer>
   );
 };

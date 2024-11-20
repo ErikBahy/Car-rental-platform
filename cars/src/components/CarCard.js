@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import styled from "styled-components";
+import { useNavigate } from "react-router-dom";
 import {
   FaCogs,
   FaUsers,
@@ -14,196 +15,147 @@ import { Carousel } from "react-responsive-carousel";
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 
 const Card = styled.div`
-  display: flex;
-  flex-direction: column;
-  border-radius: 15px;
-  padding: 16px;
-  margin: 16px;
-  background: rgba(255, 255, 255, 0.1);
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  backdrop-filter: blur(10px);
-  transition: transform 0.3s ease;
+  position: relative;
   width: 100%;
-  max-width: 320px;
-  height: 500px;
-
-  @media (hover: hover) {
-    &:hover {
-      transform: scale(1.05);
-    }
+  max-width: 280px;
+  height: 400px;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border-radius: 12px;
+  overflow: hidden;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  
+  &:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
   }
 `;
 
-const CarImageCarousel = styled(Carousel)`
-  .carousel .slide img {
-    border-radius: 10px;
-    height: 200px;
+const CarImageContainer = styled.div`
+  position: relative;
+  height: 180px;
+  background: rgba(0, 0, 0, 0.2);
+  overflow: hidden;
+  padding: 10px;
+
+  img {
     width: 100%;
+    height: 100%;
     object-fit: contain;
+    transition: transform 0.3s ease;
   }
 
-  .carousel .control-arrow {
-    display: none;
+  ${Card}:hover & img {
+    transform: scale(1.02);
   }
 `;
 
 const CarDetails = styled.div`
-  padding: 16px 0;
-  flex: 1;
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-`;
-
-const NavigationContainer = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 8px 0;
+  padding: 15px;
+  color: white;
 `;
 
 const CarName = styled.h3`
-  flex: 1;
-  text-align: center;
-  font-size: 1em;
-  color: white;
-  margin: 0;
-  padding: 0 10px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-`;
-
-const Arrow = styled.div`
+  font-size: 1.2rem;
   color: #ffd700;
-  cursor: pointer;
-  z-index: 2;
-  font-size: 1.2em;
-  padding: 0 10px;
+  margin: 0 0 10px 0;
 `;
 
-const CarPrice = styled.p`
-  font-size: 1.2em;
-  color: #ffd700;
-  font-weight: bold;
-  margin: 16px 0 0;
-  text-align: center;
-`;
-
-const OptionsRow = styled.div`
-  display: flex;
-  flex-wrap: wrap;
+const OptionsGrid = styled.div`
+  display: grid;
+  grid-template-columns: 1fr 1fr;
   gap: 8px;
-  justify-content: center;
-  padding: 8px 0;
+  margin: 10px 0;
 `;
 
 const Option = styled.div`
   display: flex;
   align-items: center;
-  font-size: 0.9em;
-  color: #fff;
-`;
-
-const OptionIcon = styled.div`
-  margin-right: 4px;
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.9);
+  
+  svg {
+    color: #ffd700;
+    margin-right: 5px;
+  }
 `;
 
 const BookNowButton = styled.button`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background-color: white;
+  position: absolute;
+  bottom: 15px;
+  right: 15px;
+  background-color: #ffd700;
   color: #333;
   border: none;
   border-radius: 8px;
-  padding: 10px;
+  padding: 8px 16px;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  gap: 8px;
   cursor: pointer;
-  transition: background-color 0.3s ease, color 0.3s ease;
+  transition: all 0.3s ease;
 
   &:hover {
-    background-color: #ffd700;
-    color: white;
+    background-color: #ffed4a;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(255, 215, 0, 0.3);
   }
 
   svg {
-    margin-right: 8px;
+    font-size: 0.9rem;
   }
 `;
 
+const Price = styled.div`
+  position: absolute;
+  bottom: 15px;
+  left: 15px;
+  font-size: 1.3rem;
+  color: #ffd700;
+  font-weight: bold;
+`;
+
 const CarCard = ({ car }) => {
-  const [currentSlide, setCurrentSlide] = useState(0);
+  const navigate = useNavigate();
 
-  const handlePrev = () => {
-    setCurrentSlide((prev) => (prev === 0 ? car.photos.length - 1 : prev - 1));
-  };
-
-  const handleNext = () => {
-    setCurrentSlide((prev) => (prev === car.photos.length - 1 ? 0 : prev + 1));
+  const handleBookNow = (e) => {
+    e.stopPropagation();
+    navigate(`/car/${car.id}`);
   };
 
   return (
     <Card>
-      <CarImageCarousel
-        selectedItem={currentSlide}
-        showThumbs={false}
-        showStatus={false}
-        infiniteLoop
-        showArrows={false}
-      >
-        {car.photos.map((photo, index) => (
-          <div key={index}>
-            <img src={'https://i.imgur.com/CiYQhnU.png'} alt={`${car.model} ${index + 1}`} />
-          </div>
-        ))}
-      </CarImageCarousel>
+      <CarImageContainer>
+        <img src={'https://i.imgur.com/CiYQhnU.png'} alt={car.model} />
+      </CarImageContainer>
       <CarDetails>
-        <NavigationContainer>
-          <Arrow onClick={handlePrev}>
-            <FaArrowLeft />
-          </Arrow>
-          <CarName>{car.model}</CarName>
-          <Arrow onClick={handleNext}>
-            <FaArrowRight />
-          </Arrow>
-        </NavigationContainer>
-        <OptionsRow>
+        <CarName>{car.model}</CarName>
+        <OptionsGrid>
           <Option>
-            <OptionIcon>
-              <FaCogs />
-            </OptionIcon>
+            <FaCogs />
             {car.transmission}
           </Option>
           <Option>
-            <OptionIcon>
-              <FaUsers />
-            </OptionIcon>
+            <FaUsers />
             {car.seating} seats
           </Option>
           <Option>
-            <OptionIcon>
-              <FaBolt />
-            </OptionIcon>
+            <FaBolt />
             {car.motorPower}
           </Option>
           <Option>
-            <OptionIcon>
-              <FaGasPump />
-            </OptionIcon>
+            <FaGasPump />
             {car.fuelType}
           </Option>
           <Option>
-            <OptionIcon>
-              <FaCalendarAlt />
-            </OptionIcon>
+            <FaCalendarAlt />
             {car.registrationYear}
           </Option>
-        </OptionsRow>
-        <CarPrice>${car.price} / day</CarPrice>
-        <BookNowButton>
-          <FaShoppingCart />
-          Book Now
+        </OptionsGrid>
+        <Price>${car.price} / day</Price>
+        <BookNowButton onClick={handleBookNow}>
+          Book Now <FaArrowRight />
         </BookNowButton>
       </CarDetails>
     </Card>

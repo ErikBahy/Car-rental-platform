@@ -7,53 +7,35 @@ import carBackground from "../assets/rruga.jpeg"; // Update the path as needed
 import ReserveModal from "./ReserveModal";
 
 const PageContainer = styled.div`
-  background: url(${carBackground}) no-repeat center center fixed;
-  background-size: cover;
+  position: relative;
+  min-height: 100vh;
+  padding: 20px;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: flex-start;
-  position: relative;
-  overflow-y: auto;
-  height: 100vh; /* Ensure full viewport height */
 
   &::before {
     content: "";
-    position: absolute;
+    position: fixed;
     top: 0;
     left: 0;
     right: 0;
     bottom: 0;
+    background: url(${carBackground}) no-repeat center center fixed;
+    background-size: cover;
     background-color: rgba(0, 0, 0, 0.5);
     z-index: -1;
-  }
-
-  &::-webkit-scrollbar {
-    width: 8px;
-  }
-
-  &::-webkit-scrollbar-thumb {
-    background-color: #ffd700;
-    border-radius: 10px;
-    border: 2px solid transparent;
-    background-clip: content-box;
-  }
-
-  &::-webkit-scrollbar-track {
-    background: transparent;
   }
 `;
 
 const ContentContainer = styled.div`
   width: 60%;
-  margin: 20px 0; /* Add margin to ensure content is scrollable */
+  margin: 80px auto 0;
+  padding: 20px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 20px;
-  border-radius: 10px;
-  // background: rgba(255, 255, 255, 0.1); /* Ensure background for visibility */
-  // backdrop-filter: blur(10px);
+  position: relative;
+  z-index: 1;
 
   @media (max-width: 768px) {
     width: 90%;

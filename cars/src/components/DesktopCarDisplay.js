@@ -18,56 +18,13 @@ const CarDisplayWrapper = styled.div`
   max-width: 1400px;
   margin: 0 auto;
   position: relative;
-  overflow: hidden;
-
-  &::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: 
-      linear-gradient(45deg, transparent 48%, rgba(255, 215, 0, 0.1) 50%, transparent 52%) 0 0 / 30px 30px,
-      linear-gradient(-45deg, transparent 48%, rgba(255, 215, 0, 0.1) 50%, transparent 52%) 0 0 / 30px 30px;
-    z-index: -1;
-  }
-
-  &::after {
-    content: '';
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    top: 0;
-    left: 0;
-    background: radial-gradient(circle at 50% 50%, rgba(255, 215, 0, 0.05) 2px, transparent 3px) 0 0 / 40px 40px;
-    animation: floatDots 30s linear infinite;
-    z-index: -1;
-  }
-
-  @keyframes floatDots {
-    0% {
-      transform: translateY(0) rotate(0deg);
-    }
-    100% {
-      transform: translateY(-100px) rotate(360deg);
-    }
-  }
+  z-index: 1;
 
   @media (max-width: 768px) {
     flex-direction: column;
     align-items: center;
     gap: 30px;
   }
-`;
-
-const AnimatedLine = styled(motion.div)`
-  position: absolute;
-  width: 100px;
-  height: 1px;
-  background: linear-gradient(90deg, transparent, rgba(255, 215, 0, 0.2), transparent);
-  pointer-events: none;
-  z-index: -1;
 `;
 
 const CarContainer = styled(motion.div)`
@@ -157,27 +114,6 @@ const PriceTag = styled.div`
 const DesktopCarDisplay = ({ cars, onClick }) => {
   return (
     <CarDisplayWrapper>
-      {[...Array(5)].map((_, i) => (
-        <AnimatedLine
-          key={i}
-          initial={{ 
-            x: -100, 
-            y: i * 200,
-            rotate: Math.random() * 45 - 22.5 
-          }}
-          animate={{ 
-            x: ["-100%", "200%"],
-            y: [i * 200, i * 200 + Math.random() * 100 - 50]
-          }}
-          transition={{
-            duration: 8 + Math.random() * 4,
-            repeat: Infinity,
-            ease: "linear",
-            delay: i * 2
-          }}
-        />
-      ))}
-      
       {cars.map((car) => (
         <CarContainer
           key={car._id}
