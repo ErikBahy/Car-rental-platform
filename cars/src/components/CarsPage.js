@@ -85,6 +85,7 @@ const ErrorState = styled(motion.div)`
 
 const CarsPage = () => {
   const [cars, setCars] = useState([]);
+  console.log(cars);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 

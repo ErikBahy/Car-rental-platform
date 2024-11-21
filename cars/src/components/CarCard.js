@@ -121,7 +121,7 @@ const CarCard = ({ car }) => {
 
   const handleBookNow = (e) => {
     e.stopPropagation();
-    navigate(`/car/${car.id}`);
+    navigate(`/car/${car._id}`);
   };
 
   return (

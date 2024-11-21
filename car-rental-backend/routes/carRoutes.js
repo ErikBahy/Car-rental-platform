@@ -15,13 +15,18 @@ router.get('/', async (req, res) => {
 // Get a specific car by ID
 router.get('/:id', async (req, res) => {
   try {
+    console.log('Attempting to find car with ID:', req.params.id);
     const car = await Car.findById(req.params.id);
-    if (car == null) {
+    console.log('Database response:', car);
+    
+    if (!car) {
+      console.log('Car not found');
       return res.status(404).json({ message: 'Car not found' });
     }
     res.json(car);
-  } catch (err) {
-    res.status(500).json({ message: err.message });
+  } catch (error) {
+    console.error('Error details:', error);
+    res.status(500).json({ message: error.message, stack: error.stack });
   }
 });
 

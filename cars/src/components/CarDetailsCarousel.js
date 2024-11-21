@@ -11,44 +11,47 @@ import { Carousel } from "react-responsive-carousel";
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 import car from "../assets/bmw.png";
 import m4 from "../assets/bmwM4.png";
+import showroom from '../assets/showroom.jpg'
 
 const CarContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
   width: 100%;
-  max-width: 600px;
-  margin: auto;
-  background: rgba(255, 255, 255, 0.1);
-  border-radius: 10px;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-  backdrop-filter: blur(10px);
-  overflow: visible; /* Ensure content doesn't overflow */
-  padding-bottom: 10px; /* Reduce bottom padding */
+  position: relative;
+  margin: 0;
+  background: none;
+  box-shadow: none;
+  backdrop-filter: none;
+  overflow: hidden;
 `;
 
 const StyledCarousel = styled(Carousel)`
   width: 100%;
 
+  .carousel .slide {
+    background: none;
+  }
+
   .carousel .slide img {
-    height: 250px;
-    width: auto;
-    max-width: 100%;
-    object-fit: contain;
-    border-radius: 10px;
+    height: 400px;
+    width: 100%;
+    object-fit: cover;
+    border-radius: 0;
   }
 
   .carousel .control-arrow {
-    background: none;
-    color: #ffd700;
+    display: none;
+  }
+
+  .carousel .control-dots {
+    bottom: 20px;
+    margin: 0;
   }
 
   .carousel .control-dots .dot {
-    background: #ccc;
-    width: 10px;
-    height: 10px;
-    margin: 0 5px;
-    opacity: 1;
+    background: rgba(255, 255, 255, 0.5);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+    width: 8px;
+    height: 8px;
+    margin: 0 4px;
   }
 
   .carousel .control-dots .dot.selected {
@@ -57,37 +60,36 @@ const StyledCarousel = styled(Carousel)`
 `;
 
 const ArrowButton = styled.button`
-  background: none;
+  background: rgba(0, 0, 0, 0.3);
   border: none;
-  color: #ffd700;
-  font-size: 3rem;
+  border-radius: 50%;
+  color: #fff;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
   cursor: pointer;
   z-index: 2;
+  transition: background 0.3s;
+
+  &:hover {
+    background: rgba(0, 0, 0, 0.5);
+  }
 
   &:focus {
     outline: none;
   }
 
   &.left {
-    left: 10px;
-    @media (max-width: 768px) {
-      left: -20px;
-    }
+    left: 20px;
   }
 
   &.right {
-    right: 10px;
-    @media (max-width: 768px) {
-      right: -20px;
-    }
-  }
-
-  svg {
-    width: 1.5em;
-    height: 1.5em;
+    right: 20px;
   }
 `;
 
@@ -160,10 +162,10 @@ const CarDetailsCarousel = () => {
 
   const options = [
     { label: "Transmission", value: "Automatic", icon: <FaCogs />, image: m4 },
-    { label: "Seating", value: "5 seats", icon: <FaUsers />, image: car },
-    { label: "Motor Power", value: "200 HP", icon: <FaBolt />, image: m4 },
-    { label: "Fuel Type", value: "Petrol", icon: <FaGasPump />, image: car },
-    { label: "Car Year", value: "2020", icon: <FaCalendarAlt />, image: m4 },
+    { label: "Seating", value: "5 seats", icon: <FaUsers />, image: "/showroom.jpg" },
+    { label: "Motor Power", value: "200 HP", icon: <FaBolt />, image: showroom },
+    { label: "Fuel Type", value: "Petrol", icon: <FaGasPump />, image: "/showroom1.jpg" },
+    { label: "Car Year", value: "2020", icon: <FaCalendarAlt />, image: "/showroom2.jpg" },
   ];
 
   const handlePrev = () => {
