@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { useParams } from "react-router-dom";
 import CarDetailsCarousel from "./CarDetailsCarousel";
 import { FaInfoCircle, FaCheckCircle } from "react-icons/fa";
-import carBackground from "../assets/rruga.jpeg"; // Update the path as needed
+import showroomBackground from "../assets/showroom.jpg"; // Update the path as needed
 import ReserveModal from "./ReserveModal";
 
 const PageContainer = styled.div`
@@ -16,14 +16,15 @@ const PageContainer = styled.div`
   &::before {
     content: "";
     position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: url(${carBackground}) no-repeat center center fixed;
+    top: -5px;
+    left: -5px;
+    right: -5px;
+    bottom: -5px;
+    background:url('/wallp2.jpg') no-repeat center center fixed;
     background-size: cover;
-    background-color: rgba(0, 0, 0, 0.5);
+    filter: blur(2px);
     z-index: -1;
+    transform: scale(1.1);
   }
 `;
 
