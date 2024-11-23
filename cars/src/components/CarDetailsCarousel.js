@@ -37,10 +37,6 @@ const StyledCarousel = styled(Carousel)`
     border-radius: 0;
   }
 
-  .carousel .control-arrow {
-    display: none;
-  }
-
   .carousel .control-dots {
     bottom: 20px;
     margin: 0;
@@ -105,63 +101,12 @@ const ThinArrowRight = () => (
   </svg>
 );
 
-const Divider = styled.div`
-  width: 100%;
-  height: 1px;
-  background-color: #ffd700;
-  margin: 10px 0; /* Reduce margin */
-`;
-
-const OptionDescriptionContainer = styled.div`
-  width: 100%;
-  overflow: hidden; /* Ensure the sliding content doesn't overflow */
-`;
-
-const OptionDescription = styled.div`
-  padding: 10px 20px; /* Reduce top and bottom padding */
-  text-align: center;
-  font-size: 1.2em;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
-  animation: ${({ direction }) =>
-    direction === "left" ? "slideInFromLeft" : "slideInFromRight"}
-    0.5s ease-out;
-  color: #ffd700;
-
-  span {
-    color: white;
-  }
-
-  @keyframes slideInFromLeft {
-    from {
-      opacity: 0;
-      transform: translateX(-100%);
-    }
-    to {
-      opacity: 1;
-      transform: translateX(0);
-    }
-  }
-
-  @keyframes slideInFromRight {
-    from {
-      opacity: 0;
-      transform: translateX(100%);
-    to {
-      opacity: 1;
-      transform: translateX(0);
-    }
-  }
-`;
-
 const CarDetailsCarousel = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [direction, setDirection] = useState("right");
 
   const options = [
-    { label: "Transmission", value: "Automatic", icon: <FaCogs />, image: m4 },
+    { label: "Transmission", value: "Automatic", icon: <FaCogs />, image: showroom },
     { label: "Seating", value: "5 seats", icon: <FaUsers />, image: "/showroom.jpg" },
     { label: "Motor Power", value: "200 HP", icon: <FaBolt />, image: showroom },
     { label: "Fuel Type", value: "Petrol", icon: <FaGasPump />, image: "/showroom1.jpg" },
@@ -219,14 +164,6 @@ const CarDetailsCarousel = () => {
           </div>
         ))}
       </StyledCarousel>
-      <Divider />
-      <OptionDescriptionContainer>
-        <OptionDescription key={currentIndex} direction={direction}>
-          {options[currentIndex].icon}
-          <strong>{options[currentIndex].label}:</strong>{" "}
-          <span>{options[currentIndex].value}</span>
-        </OptionDescription>
-      </OptionDescriptionContainer>
     </CarContainer>
   );
 };

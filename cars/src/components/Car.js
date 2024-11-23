@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { useParams } from "react-router-dom";
 import CarDetailsCarousel from "./CarDetailsCarousel";
-import { FaInfoCircle, FaCheckCircle, FaUsers, FaTachometerAlt } from "react-icons/fa";
+import { FaInfoCircle, FaCheckCircle, FaUsers, FaTachometerAlt, FaBolt } from "react-icons/fa";
 import showroomBackground from "../assets/showroom.jpg"; // Update the path as needed
 import ReserveModal from "./ReserveModal";
 import axios from "axios";
@@ -21,55 +21,68 @@ const PageContainer = styled.div`
     left: -5px;
     right: -5px;
     bottom: -5px;
-    background:url('/wallp2.jpg') no-repeat center center fixed;
+    background:url('/luxurycar1.jpg') no-repeat center center fixed;
     background-size: cover;
-    filter: blur(2px);
+    filter: blur(15px);
     z-index: -1;
     transform: scale(1.1);
   }
 `;
 
 const ContentContainer = styled.div`
-  width: 60%;
-  margin: 80px auto 0;
-  padding: 20px;
+  width: 65%;
+  margin: 40px auto 0;
+  padding: 0;
   display: flex;
   flex-direction: column;
   align-items: center;
   position: relative;
   z-index: 1;
+  gap: 40px;
 
   @media (max-width: 768px) {
     width: 90%;
+    gap: 30px;
   }
 `;
 
-const BookNowButton = styled.button`
+const CarInfoContainer = styled.div`
   width: 100%;
-  max-width: 600px;
-  background-color: rgba(255, 215, 0, 0.8);
+  display: flex;
+  flex-direction: column;
+`;
+
+const BookNowButton = styled.button`
+  background: linear-gradient(135deg, #ffd700 0%, #ffed4a 100%);
   color: black;
-  padding: 15px;
+  padding: 12px 30px;
+  min-width: 200px;
   border: none;
-  cursor: pointer;
-  font-size: 1.2em;
+  border-radius: 8px;
   font-weight: bold;
-  border-radius: 10px;
-  margin-bottom: 40px;
+  font-size: 1.1em;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
 
   &:hover {
-    background-color: rgba(230, 194, 0, 0.8);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
   }
 
+  &:active {
+    transform: translateY(0);
+  }
+  
   @media (max-width: 768px) {
     position: fixed;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    padding: 20px 0;
-    margin: 0;
-    border-radius: 0;
-    z-index: 3;
+    bottom: 10px;
+    left: 10px;
+    right: 10px;
+    width: calc(100% - 20px);
+    border-radius: 8px;
+    padding: 20px;
+    z-index: 100;
   }
 `;
 
@@ -79,16 +92,9 @@ const Card = styled.div`
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
   backdrop-filter: blur(10px);
   padding: 20px;
-  margin: 20px 0; /* Ensure consistent margin */
   width: 100%;
-  max-width: 600px; /* Match the carousel width */
   color: white;
-
-  ${({ removeMarginTop }) =>
-    removeMarginTop &&
-    `
-    margin-top: 0;
-  `}
+  margin: 0;
 
   h3 {
     color: #ffd700;
@@ -124,43 +130,45 @@ const pricingConditions = [
   "Insurance included",
 ];
 
-const features = [
-  "Air Conditioning",
-  "GPS Navigation",
-  "Bluetooth Connectivity",
-  "Heated Seats",
-  "Backup Camera",
-  "Leather Seats",
-  "Sunroof",
-  "Blind Spot Monitoring",
-  "Keyless Entry",
-  "Adaptive Cruise Control",
-  "Automatic Emergency Braking",
-  "Lane Keeping Assist",
-  "Parking Sensors",
-  "Rain Sensing Wipers",
-  "Automatic Headlights",
-  "Remote Start",
-  "Apple CarPlay",
-  "Android Auto",
-  "Wi-Fi Hotspot",
-  "Wireless Charging",
-  "Rear Cross-Traffic Alert",
-  "Driver Attention Monitor",
-  "Head-Up Display",
-  "Premium Sound System",
-  "Multi-Zone Climate Control",
-  "Power Liftgate",
-  "Ambient Lighting",
-  "Heated Steering Wheel",
-  "Voice Recognition",
-  "Satellite Radio",
-];
+
+const SpecsContainer = styled(Card)`
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 15px;
+  padding: 20px;
+  margin: 0;
+  border-radius: 10px 10px 0 0;
+  
+  @media (max-width: 768px) {
+    grid-template-columns: repeat(3, 1fr);
+  }
+`;
+
+const SpecItem = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  
+  svg {
+    color: #ffd700;
+    font-size: 1.5em;
+    margin-bottom: 8px;
+  }
+  
+  span {
+    color: white;
+    font-size: 0.9em;
+    text-align: center;
+  }
+`;
 
 const CarouselWrapper = styled.div`
   width: 100%;
   max-width: 100%;
   margin: 0 auto;
+  border-radius: 0 0 10px 10px;
+  overflow: hidden;
 `;
 
 const LoadingSpinner = styled.div`
@@ -168,28 +176,34 @@ const LoadingSpinner = styled.div`
 `;
 
 const CarHeader = styled.div`
-  text-align: center;
-  margin-bottom: 20px;
   width: 100%;
-  max-width: 800px;
+  padding: 20px 0;
+  position: relative;
+  z-index: 10;
+`;
+
+const HeaderContent = styled.div`
+  width: 65%;
+  margin: 0 auto;
+  padding: 0 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   
-  h2 {
-    color: #ffd700;
-    font-size: 2.4em;
-    margin: 0;
-    margin-bottom: 10px;
+  @media (max-width: 768px) {
+    width: 90%;
   }
-  
-  .car-subtitle {
-    color: #ffffff;
-    font-size: 1.2em;
-    display: flex;
-    justify-content: center;
-    gap: 15px;
+`;
+
+const CarInfo = styled.div`
+  h2 {
+    color: white;
+    margin: 0;
+    font-size: 2em;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
     
     span {
-      display: flex;
-      align-items: center;
+      color: #ffd700;
     }
   }
 `;
@@ -256,21 +270,48 @@ const Car = () => {
 
   return (
     <PageContainer>
-      <ContentContainer>
-        <CarHeader>
-          <h2>{car.make} {car.model}</h2>
-          <div className="car-subtitle">
-            <span>{car.registrationYear}</span>
-            <span>•</span>
-            <span>{car.transmission}</span>
-            <span>•</span>
-            <span>{car.fuelType}</span>
-          </div>
-        </CarHeader>
+      <CarHeader>
+        <HeaderContent>
+          <CarInfo>
+            <h2>
+              {car.make} <span>{car.model}</span>
+            </h2>
+          </CarInfo>
+          <BookNowButton onClick={openModal}>
+            Book Now
+          </BookNowButton>
+        </HeaderContent>
+      </CarHeader>
 
-        <CarouselWrapper>
-          <CarDetailsCarousel images={car.photos} />
-        </CarouselWrapper>
+      <ContentContainer>
+        <CarInfoContainer>
+          <SpecsContainer>
+            <SpecItem>
+              <FaUsers />
+              <span>{car.seats} Seats</span>
+            </SpecItem>
+            <SpecItem>
+              <FaTachometerAlt />
+              <span>{car.transmission}</span>
+            </SpecItem>
+            <SpecItem>
+              <FaInfoCircle />
+              <span>{car.fuelType}</span>
+            </SpecItem>
+            <SpecItem>
+              <FaBolt />
+              <span>{car.motorPower}</span>
+            </SpecItem>
+            <SpecItem>
+              <FaCheckCircle />
+              <span>{car.registrationYear}</span>
+            </SpecItem>
+          </SpecsContainer>
+
+          <CarouselWrapper>
+            <CarDetailsCarousel images={car.photos} hideInfo={true} />
+          </CarouselWrapper>
+        </CarInfoContainer>
 
         <Card>
           <h3>Pricing</h3>
@@ -287,7 +328,7 @@ const Car = () => {
 
         <Card
           isMobile={width < 768}
-          style={{ marginBottom: width < 768 ? 90 : 20 }}
+          style={{ marginBottom: width < 768 ? 90 : 0 }}
         >
           <h3>Features</h3>
           <ul>
@@ -299,16 +340,14 @@ const Car = () => {
             ))}
           </ul>
         </Card>
-
-        <BookNowButton onClick={openModal}>Book Now</BookNowButton>
-        
-        <ReserveModal 
-          isOpen={isModalOpen} 
-          onClose={closeModal} 
-          disabled={false}
-          car={car}
-        />
       </ContentContainer>
+      
+      <ReserveModal 
+        isOpen={isModalOpen} 
+        onClose={closeModal} 
+        disabled={false}
+        car={car}
+      />
     </PageContainer>
   );
 };
