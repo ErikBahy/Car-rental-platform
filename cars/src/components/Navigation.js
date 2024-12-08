@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { motion, AnimatePresence } from "framer-motion";
@@ -168,6 +168,21 @@ function Navigation({ isOpen, setIsOpen }) {
   const location = useLocation();
   const navigate = useNavigate();
 
+  const checkManagerStatus = () => {
+    const isManager = localStorage.getItem('isManager') === 'true';
+    const expiresAt = localStorage.getItem('managerExpires');
+    
+    if (isManager && expiresAt) {
+      if (new Date().getTime() > parseInt(expiresAt)) {
+        localStorage.removeItem('isManager');
+        localStorage.removeItem('managerExpires');
+        return false;
+      }
+      return true;
+    }
+    return false;
+  };
+
   const swipeHandlers = useSwipeable({
     onSwipedLeft: () => setIsOpen(false),
     preventDefaultTouchmoveEvent: true,
@@ -177,6 +192,13 @@ function Navigation({ isOpen, setIsOpen }) {
   const handleFleetClick = (e) => {
     e.stopPropagation();
     navigate('/our-cars');
+  };
+
+  const getNavigationItems = () => {
+    const baseItems = ["Home", "Our Cars"];
+    return checkManagerStatus() 
+      ? [...baseItems, "Reservations", "Manage Cars"]
+      : baseItems;
   };
 
   return (
@@ -206,7 +228,7 @@ function Navigation({ isOpen, setIsOpen }) {
               </CloseButton>
             )}
             <NavList>
-              {["Home", "Our Cars", "Reservations", "Manage Cars"].map(
+              {getNavigationItems().map(
                 (item, index) => (
                   <NavItem
                     key={item}

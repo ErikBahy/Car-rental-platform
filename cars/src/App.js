@@ -11,6 +11,8 @@ import ReservationsManagementPage from "./components/ReservationsManagementPage"
 import CarsManagementPage from "./components/CarsManagementPage";
 import Navigation from "./components/Navigation";
 import Footer from "./components/Footer";
+import ProtectedRoute from "./components/ProtectedRoute";
+import ManagerAccessPage from "./components/ManagerAccessPage";
 
 const AppContainer = styled.div`
   display: flex;
@@ -45,11 +47,23 @@ const App = () => {
             <Route path="/" element={<LandingPage />} />
             <Route path="/our-cars" element={<CarDetailsPage />} />
             <Route path="/car/:id" element={<Car />} />
+            <Route path="/manager-access" element={<ManagerAccessPage />} />
             <Route
               path="/reservations"
-              element={<ReservationsManagementPage />}
+              element={
+                <ProtectedRoute>
+                  <ReservationsManagementPage />
+                </ProtectedRoute>
+              }
             />
-            <Route path="/manage-cars" element={<CarsManagementPage />} />
+            <Route
+              path="/manage-cars"
+              element={
+                <ProtectedRoute>
+                  <CarsManagementPage />
+                </ProtectedRoute>
+              }
+            />
           </Routes>
           <Footer />
         </ContentContainer>
