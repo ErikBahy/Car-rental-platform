@@ -17,8 +17,8 @@ import "react-responsive-carousel/lib/styles/carousel.min.css";
 const Card = styled.div`
   position: relative;
   width: 100%;
-  max-width: 280px;
-  height: 400px;
+  max-width: 300px;
+  height: 450px;
   background: rgba(255, 255, 255, 0.1);
   backdrop-filter: blur(10px);
   border-radius: 12px;
@@ -33,26 +33,30 @@ const Card = styled.div`
 
 const CarImageContainer = styled.div`
   position: relative;
-  height: 180px;
-  background: rgba(0, 0, 0, 0.2);
+  height: 240px;
+  background: rgba(0, 0, 0, 0.5);
   overflow: hidden;
-  padding: 10px;
+  padding: 0;
 
   img {
     width: 100%;
     height: 100%;
-    object-fit: contain;
+    object-fit: cover;
+    object-position: center 30%;
     transition: transform 0.3s ease;
   }
 
   ${Card}:hover & img {
-    transform: scale(1.02);
+    transform: scale(1.05);
   }
 `;
 
 const CarDetails = styled.div`
   padding: 15px;
   color: white;
+  height: calc(100% - 240px);
+  display: flex;
+  flex-direction: column;
 `;
 
 const CarName = styled.h3`
@@ -73,10 +77,11 @@ const Option = styled.div`
   align-items: center;
   font-size: 0.9rem;
   color: rgba(255, 255, 255, 0.9);
+  gap: 5px;
   
   svg {
     color: #ffd700;
-    margin-right: 5px;
+    min-width: 16px;
   }
 `;
 
@@ -127,10 +132,14 @@ const CarCard = ({ car }) => {
   return (
     <Card>
       <CarImageContainer>
-        <img src={'https://i.imgur.com/CiYQhnU.png'} alt={car.model} />
+        <img 
+          src={car.favouriteImage?.url || car.photos[0]?.url || 'default-car-image.jpg'} 
+          alt={`${car.make} ${car.model}`} 
+          loading="lazy"
+        />
       </CarImageContainer>
       <CarDetails>
-        <CarName>{car.model}</CarName>
+        <CarName>{car.make} {car.model}</CarName>
         <OptionsGrid>
           <Option>
             <FaCogs />
@@ -138,7 +147,7 @@ const CarCard = ({ car }) => {
           </Option>
           <Option>
             <FaUsers />
-            {car.seating} seats
+            {car.seats} Seats
           </Option>
           <Option>
             <FaBolt />

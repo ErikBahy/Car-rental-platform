@@ -109,7 +109,7 @@ const ScrollPrompt = styled.div`
   cursor: pointer;
   z-index: 2;
   opacity: ${props => props.opacity};
-  transition: opacity 0.3s ease;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
   
   @media (max-width: 768px) {
     display: none;
@@ -186,6 +186,7 @@ const HomePage = () => {
   const [isDesktop, setIsDesktop] = useState(window.innerWidth > 768);
   const navigate = useNavigate();
   const [blur, setBlur] = useState(0);
+  const [showArrow, setShowArrow] = useState(true);
 
   useEffect(() => {
     const handleResize = () => {
@@ -216,6 +217,8 @@ const HomePage = () => {
     const scrollY = window.scrollY;
     const fadeStart = window.innerHeight * 0.3;
     const fadeEnd = window.innerHeight * 0.8;
+
+    setShowArrow(scrollY < 100);
 
     const opacity = Math.max(0, Math.min(0.5, 
       0.5 - (scrollY - fadeStart) / (fadeEnd - fadeStart) * 0.5
@@ -291,7 +294,11 @@ const HomePage = () => {
           </StatItem>
         </StatsContainer>
         <ScrollPrompt
-          opacity={arrowOpacity}
+          opacity={showArrow ? 1 : 0}
+          style={{ 
+            visibility: showArrow ? 'visible' : 'hidden',
+            transition: 'opacity 0.3s ease, visibility 0.3s ease'
+          }}
           onClick={() => window.scrollTo({ top: window.innerHeight, behavior: 'smooth' })}
         >
           <ArrowAnimation

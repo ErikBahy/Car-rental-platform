@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import styled from "styled-components";
+import { toast } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
 
 const Container = styled.div`
   padding: 1rem;
@@ -84,6 +86,7 @@ const Modal = styled.div`
   justify-content: center;
   align-items: center;
   padding: 1rem;
+  z-index: 9999;
 `;
 
 const ModalContent = styled.div`
@@ -145,6 +148,43 @@ const ButtonGroup = styled.div`
   }
 `;
 
+const PreviewContainer = styled.div`
+  display: flex;
+  gap: 10px;
+  margin-top: 10px;
+  flex-wrap: wrap;
+`;
+
+const ImagePreview = styled.div`
+  position: relative;
+  width: 100px;
+  height: 100px;
+  
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 4px;
+  }
+  
+  button {
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    background: red;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+  }
+`;
+
 function CarsManagementPage() {
   const [cars, setCars] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -159,10 +199,10 @@ function CarsManagementPage() {
   const [fuelType, setFuelType] = useState("");
   const [seating, setSeating] = useState("");
   const [motorPower, setMotorPower] = useState("");
-  const [favouriteImage, setFavouriteImage] = useState("");
-  const [isFavourite, setIsFavourite] = useState(false);
   const [features, setFeatures] = useState([]);
-  const [photos, setPhotos] = useState([]);
+
+  const [selectedFiles, setSelectedFiles] = useState([]);
+  const [previews, setPreviews] = useState([]);
 
   useEffect(() => {
     fetchCars();
@@ -189,10 +229,7 @@ function CarsManagementPage() {
       setFuelType(car.fuelType);
       setSeating(car.seating);
       setMotorPower(car.motorPower);
-      setFavouriteImage(car.favouriteImage);
-      setIsFavourite(car.isFavourite);
       setFeatures(car.features);
-      setPhotos(car.photos);
     } else {
       setMake("");
       setModel("");
@@ -202,10 +239,7 @@ function CarsManagementPage() {
       setFuelType("");
       setSeating("");
       setMotorPower("");
-      setFavouriteImage("");
-      setIsFavourite(false);
       setFeatures([]);
-      setPhotos([]);
     }
     setIsModalOpen(true);
   };
@@ -213,35 +247,88 @@ function CarsManagementPage() {
   const closeModal = () => {
     setIsModalOpen(false);
     setSelectedCar(null);
+    previews.forEach(URL.revokeObjectURL);
+    setPreviews([]);
+    setSelectedFiles([]);
+  };
+
+  const handleFileSelect = (e) => {
+    const newFiles = Array.from(e.target.files);
+    
+    // Combine existing files with new files
+    const updatedFiles = [...selectedFiles, ...newFiles];
+    
+    // Check total file count
+    if (updatedFiles.length > 10) {
+      toast.error('You can only upload up to 10 images');
+      return;
+    }
+    
+    setSelectedFiles(updatedFiles);
+    
+    // Create new previews for the new files only
+    const newPreviews = newFiles.map(file => URL.createObjectURL(file));
+    setPreviews(prev => [...prev, ...newPreviews]);
+  };
+
+  const handleRemoveFile = (index) => {
+    URL.revokeObjectURL(previews[index]); // Clean up the URL
+    
+    setSelectedFiles(prev => prev.filter((_, i) => i !== index));
+    setPreviews(prev => prev.filter((_, i) => i !== index));
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const carData = {
-      make,
-      model,
-      registrationYear: Number(registrationYear),
-      price: Number(price),
-      transmission,
-      fuelType,
-      seating: Number(seating),
-      motorPower,
-      isFavourite,
-      favouriteImage,
-      features,
-      photos,
-    };
-
+    
     try {
-      if (modalMode === "add") {
-        await axios.post("http://localhost:5000/api/cars", carData);
-      } else {
-        await axios.put(`http://localhost:5000/api/cars/${selectedCar._id}`, carData);
+      if (selectedFiles.length === 0) {
+        toast.error('Please select at least one image');
+        return;
       }
-      fetchCars();
+
+      const formData = new FormData();
+      
+      selectedFiles.forEach(file => {
+        formData.append('images', file);
+      });
+      
+      const carData = {
+        make,
+        model,
+        registrationYear: parseInt(registrationYear),
+        price: parseFloat(price),
+        transmission,
+        fuelType,
+        seating: parseInt(seating),
+        motorPower,
+        features: features.filter(f => f.trim() !== '')
+      };
+      
+      formData.append('carData', JSON.stringify(carData));
+      
+      for (let [key, value] of formData.entries()) {
+        console.log(`${key}:`, value instanceof File ? value.name : value);
+      }
+      
+      const response = await axios.post('http://localhost:5000/api/cars', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        }
+      });
+      
+      console.log('Car created successfully:', response.data);
+      toast.success('Car added successfully!');
       closeModal();
+      fetchCars();
+      
+      previews.forEach(URL.revokeObjectURL);
+      setPreviews([]);
+      setSelectedFiles([]);
+      
     } catch (error) {
-      console.error("Error saving car:", error);
+      console.error('Error creating car:', error);
+      toast.error(error.response?.data?.message || 'Error creating car');
     }
   };
 
@@ -255,6 +342,20 @@ function CarsManagementPage() {
       }
     }
   };
+
+  const handleDeleteImage = async (carId, publicId) => {
+    try {
+      await axios.delete(`http://localhost:5000/api/cars/${carId}/images/${publicId}`);
+    } catch (error) {
+      console.error('Error deleting image:', error);
+    }
+  };
+
+  useEffect(() => {
+    return () => {
+      previews.forEach(URL.revokeObjectURL);
+    };
+  }, [previews]);
 
   return (
     <Container>
@@ -353,24 +454,6 @@ function CarsManagementPage() {
                 <Input type="text" value={motorPower} onChange={(e) => setMotorPower(e.target.value)} required />
               </FormGroup>
               <FormGroup>
-                <Label>Is Favourite:</Label>
-                <Input
-                  type="checkbox"
-                  checked={isFavourite}
-                  onChange={(e) => setIsFavourite(e.target.checked)}
-                />
-              </FormGroup>
-              <FormGroup>
-                <Label>Favorite Image URL:</Label>
-                <Input
-                  type="url"
-                  value={favouriteImage}
-                  onChange={(e) => setFavouriteImage(e.target.value)}
-                  disabled={!isFavourite}
-                  required={isFavourite}
-                />
-              </FormGroup>
-              <FormGroup>
                 <Label>Features (comma-separated):</Label>
                 <Input
                   type="text"
@@ -380,13 +463,30 @@ function CarsManagementPage() {
                 />
               </FormGroup>
               <FormGroup>
-                <Label>Photos (comma-separated URLs):</Label>
+                <Label>Car Images (up to 10 images):</Label>
                 <Input
-                  type="text"
-                  value={photos.join(", ")}
-                  onChange={(e) => setPhotos(e.target.value.split(", "))}
-                  required
+                  type="file"
+                  multiple
+                  accept="image/*"
+                  onChange={handleFileSelect}
+                  style={{ marginBottom: '10px' }}
+                  onClick={(e) => { e.target.value = null }}
                 />
+                <PreviewContainer>
+                  {previews.map((preview, index) => (
+                    <ImagePreview key={`${preview}-${index}`}>
+                      <img src={preview} alt={`Preview ${index + 1}`} />
+                      <button 
+                        type="button" 
+                        onClick={() => handleRemoveFile(index)}
+                      >×</button>
+                    </ImagePreview>
+                  ))}
+                </PreviewContainer>
+                <small>
+                  Selected: {selectedFiles.length}/10 images. 
+                  First image will be used as the thumbnail.
+                </small>
               </FormGroup>
               <ButtonGroup>
                 <Button type="submit">{modalMode === "add" ? "Add Car" : "Update Car"}</Button>

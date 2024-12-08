@@ -1,6 +1,9 @@
 import React, { useState, useRef } from "react";
 import styled from "styled-components";
 import { FaTimes } from "react-icons/fa";
+import axios from "axios";
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const ModalOverlay = styled.div`
   position: fixed;
@@ -136,6 +139,60 @@ const BookNowButton = styled.button`
   }
 `;
 
+const UserInfoContainer = styled.div`
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 15px;
+  margin: 20px 0;
+
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr;
+  }
+`;
+
+const Input = styled.input`
+  width: 100%;
+  padding: 12px;
+  font-size: 1em;
+  border: 1px solid rgba(255, 215, 0, 0.3);
+  border-radius: 8px;
+  background: rgba(0, 0, 0, 0.4);
+  color: white;
+  transition: all 0.3s ease;
+
+  &:focus {
+    outline: none;
+    border-color: #ffd700;
+    box-shadow: 0 0 15px rgba(255, 215, 0, 0.2);
+  }
+
+  &::placeholder {
+    color: rgba(255, 255, 255, 0.6);
+  }
+`;
+
+const ErrorMessage = styled.div`
+  color: #ff4444;
+  font-size: 0.9em;
+  margin-top: 5px;
+  text-align: center;
+`;
+
+const LoadingSpinner = styled.div`
+  border: 3px solid rgba(255, 215, 0, 0.1);
+  border-top: 3px solid #ffd700;
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  animation: spin 1s linear infinite;
+  margin: 0 auto;
+  
+  @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+`;
+
 const ReserveModal = ({ isOpen, onClose, disabled, car }) => {
   const [pickupDate, setPickupDate] = useState("");
   const [dropoffDate, setDropoffDate] = useState("");
@@ -144,6 +201,15 @@ const ReserveModal = ({ isOpen, onClose, disabled, car }) => {
   const pickupInputRef = useRef(null);
   const dropoffInputRef = useRef(null);
 
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
+
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+  const [isAvailable, setIsAvailable] = useState(true);
+
   const handlePickupChange = (e) => {
     const selectedDate = e.target.value;
     setPickupDate(selectedDate);
@@ -151,10 +217,19 @@ const ReserveModal = ({ isOpen, onClose, disabled, car }) => {
     if (dropoffDate && new Date(dropoffDate) < new Date(selectedDate)) {
       setDropoffDate("");
     }
+
+    if (selectedDate && dropoffDate) {
+      checkAvailability(selectedDate, dropoffDate);
+    }
   };
 
   const handleDropoffChange = (e) => {
-    setDropoffDate(e.target.value);
+    const selectedDate = e.target.value;
+    setDropoffDate(selectedDate);
+    
+    if (pickupDate && selectedDate) {
+      checkAvailability(pickupDate, selectedDate);
+    }
   };
 
   const handleInputClick = (inputRef) => {
@@ -164,14 +239,109 @@ const ReserveModal = ({ isOpen, onClose, disabled, car }) => {
     }
   };
 
+  const isFormValid = () => {
+    return (
+      pickupDate && 
+      dropoffDate && 
+      firstName && 
+      lastName && 
+      email && 
+      phone
+    );
+  };
+
+  const checkAvailability = async (pickup, dropoff) => {
+    try {
+      const response = await axios.get(
+        `http://localhost:5000/api/reservations/check-availability/${car._id}`,
+        {
+          params: {
+            startDate: pickup,
+            endDate: dropoff
+          }
+        }
+      );
+      setIsAvailable(response.data.available);
+      if (!response.data.available) {
+        setError("This car is not available for the selected dates");
+      } else {
+        setError("");
+      }
+    } catch (err) {
+      console.error("Error checking availability:", err);
+      setError("Error checking availability");
+    }
+  };
+
+  const handleSubmit = async () => {
+    if (!isAvailable) {
+      setError("This car is not available for the selected dates");
+      return;
+    }
+
+    setLoading(true);
+    setError("");
+
+    const reservationData = {
+      carId: car._id,
+      pickupDate,
+      dropoffDate,
+      customer: {
+        firstName,
+        lastName,
+        email,
+        phone
+      }
+    };
+
+    try {
+      const response = await axios.post('http://localhost:5000/api/reservations', reservationData);
+      toast.success('Reservation submitted successfully! We will contact you shortly.', {
+        position: "top-center",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        theme: "dark",
+        style: { 
+          background: "rgba(0, 0, 0, 0.8)",
+          color: "#fff"
+        }
+      });
+      onClose();
+    } catch (error) {
+      console.error('Error making reservation:', error);
+      setError(error.response?.data?.message || 'Error making reservation');
+      toast.error('Error making reservation. Please try again.', {
+        position: "top-center",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        theme: "dark",
+        style: { 
+          background: "rgba(0, 0, 0, 0.8)",
+          color: "#fff"
+        }
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
+
   if (!isOpen) return null;
 
   return (
     <ModalOverlay onClick={(e) => e.target === e.currentTarget && onClose()}>
       <ModalContent>
         <CloseIcon onClick={onClose} />
-        <Title>Reserve {car.make} {car.model}</Title>
-        
+        <Title>
+          Reserve {car.make} {car.model}
+          <span>Please fill in your details below</span>
+        </Title>
+
         <DateInputsContainer>
           <InputWrapper ref={pickupInputRef}>
             <DateInput
@@ -214,14 +384,44 @@ const ReserveModal = ({ isOpen, onClose, disabled, car }) => {
           </InputWrapper>
         </DateInputsContainer>
 
+        <UserInfoContainer>
+          <Input
+            type="text"
+            placeholder="First Name"
+            value={firstName}
+            onChange={(e) => setFirstName(e.target.value)}
+            required
+          />
+          <Input
+            type="text"
+            placeholder="Last Name"
+            value={lastName}
+            onChange={(e) => setLastName(e.target.value)}
+            required
+          />
+          <Input
+            type="email"
+            placeholder="Email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+          />
+          <Input
+            type="tel"
+            placeholder="Phone Number"
+            value={phone}
+            onChange={(e) => setPhone(e.target.value)}
+            required
+          />
+        </UserInfoContainer>
+
+        {error && <ErrorMessage>{error}</ErrorMessage>}
+        
         <BookNowButton 
-          disabled={!pickupDate || !dropoffDate || disabled}
-          onClick={() => {
-            // Handle booking logic here
-            console.log("Booking:", { pickupDate, dropoffDate, car });
-          }}
+          disabled={!isFormValid() || disabled || loading || !isAvailable}
+          onClick={handleSubmit}
         >
-          Confirm Booking
+          {loading ? <LoadingSpinner /> : 'Confirm Booking'}
         </BookNowButton>
       </ModalContent>
     </ModalOverlay>

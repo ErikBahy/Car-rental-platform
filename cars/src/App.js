@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import styled from "styled-components";
 import GlobalStyle from "./globalStyles";
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import LandingPage from "./components/LandingPage";
 import Car from "./components/Car";
 import CarDetailsPage from "./components/CarsPage";
@@ -30,7 +32,7 @@ const ContentContainer = styled.div`
   }
 `;
 
-function App() {
+const App = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   return (
@@ -51,9 +53,22 @@ function App() {
           </Routes>
           <Footer />
         </ContentContainer>
+        <ToastContainer 
+          position="top-right"
+          autoClose={5000}
+          hideProgressBar={false}
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+          theme="dark"
+          style={{ zIndex: 9999 }}
+        />
       </AppContainer>
     </Router>
   );
-}
+};
 
 export default App;

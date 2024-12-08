@@ -17,7 +17,7 @@ const CarContainer = styled.div`
   width: 100%;
   position: relative;
   margin: 0;
-  background: none;
+  background: rgba(0, 0, 0, 0.5);
   box-shadow: none;
   backdrop-filter: none;
   overflow: hidden;
@@ -25,16 +25,26 @@ const CarContainer = styled.div`
 
 const StyledCarousel = styled(Carousel)`
   width: 100%;
+  height: 100%;
 
   .carousel .slide {
     background: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 
   .carousel .slide img {
-    height: 400px;
+    max-height: 70vh;
     width: 100%;
     object-fit: cover;
-    border-radius: 0;
+    background: none;
+  }
+
+  @media (max-width: 768px) {
+    .carousel .slide img {
+      max-height: 50vh;
+    }
   }
 
   .carousel .control-dots {
@@ -101,29 +111,9 @@ const ThinArrowRight = () => (
   </svg>
 );
 
-const CarDetailsCarousel = () => {
+const CarDetailsCarousel = ({ images }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [direction, setDirection] = useState("right");
-
-  const options = [
-    { label: "Transmission", value: "Automatic", icon: <FaCogs />, image: showroom },
-    { label: "Seating", value: "5 seats", icon: <FaUsers />, image: "/showroom.jpg" },
-    { label: "Motor Power", value: "200 HP", icon: <FaBolt />, image: showroom },
-    { label: "Fuel Type", value: "Petrol", icon: <FaGasPump />, image: "/showroom1.jpg" },
-    { label: "Car Year", value: "2020", icon: <FaCalendarAlt />, image: "/showroom2.jpg" },
-  ];
-
-  const handlePrev = () => {
-    setDirection("left");
-    setCurrentIndex(
-      (prevIndex) => (prevIndex - 1 + options.length) % options.length
-    );
-  };
-
-  const handleNext = () => {
-    setDirection("right");
-    setCurrentIndex((prevIndex) => (prevIndex + 1) % options.length);
-  };
 
   return (
     <CarContainer>
@@ -133,34 +123,22 @@ const CarDetailsCarousel = () => {
         selectedItem={currentIndex}
         renderArrowPrev={(onClickHandler, hasPrev) =>
           hasPrev && (
-            <ArrowButton
-              className="left"
-              onClick={() => {
-                onClickHandler();
-                handlePrev();
-              }}
-            >
+            <ArrowButton className="left" onClick={onClickHandler}>
               <ThinArrowLeft />
             </ArrowButton>
           )
         }
         renderArrowNext={(onClickHandler, hasNext) =>
           hasNext && (
-            <ArrowButton
-              className="right"
-              onClick={() => {
-                onClickHandler();
-                handleNext();
-              }}
-            >
+            <ArrowButton className="right" onClick={onClickHandler}>
               <ThinArrowRight />
             </ArrowButton>
           )
         }
       >
-        {options.map((option, index) => (
+        {images.map((image, index) => (
           <div key={index}>
-            <img src={option.image} alt={`${option.label} - ${option.value}`} />
+            <img src={image.url} alt={`Car view ${index + 1}`} />
           </div>
         ))}
       </StyledCarousel>

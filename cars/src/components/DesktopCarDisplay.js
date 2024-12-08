@@ -31,6 +31,9 @@ const CarContainer = styled(motion.div)`
   position: relative;
   width: 300px;
   cursor: pointer;
+  background: rgba(0, 0, 0, 0.5);
+  border-radius: 10px;
+  overflow: hidden;
   
   @media (max-width: 768px) {
     width: 90%;
@@ -40,8 +43,9 @@ const CarContainer = styled(motion.div)`
 
 const CarImage = styled.img`
   width: 100%;
-  height: 200px;
-  object-fit: contain;
+  height: 240px;
+  object-fit: cover;
+  object-position: center 30%;
   transition: transform 0.3s ease;
 `;
 
@@ -125,8 +129,9 @@ const DesktopCarDisplay = ({ cars, onClick }) => {
           whileHover={{ scale: 1.03 }}
         >
           <CarImage 
-            src={car.favouriteImag || 'https://i.imgur.com/CiYQhnU.png'} 
-            alt={car.model} 
+            src={car.favouriteImage?.url || car.photos[0]?.url || 'default-car-image.jpg'} 
+            alt={`${car.make} ${car.model}`}
+            loading="lazy"
           />
           <BasicInfo>
             <h3>{car.model}</h3>

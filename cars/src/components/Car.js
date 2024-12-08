@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { useParams } from "react-router-dom";
 import CarDetailsCarousel from "./CarDetailsCarousel";
-import { FaInfoCircle, FaCheckCircle, FaUsers, FaTachometerAlt, FaBolt } from "react-icons/fa";
+import { FaInfoCircle, FaCheckCircle, FaUsers, FaTachometerAlt, FaBolt, FaGasPump, FaCalendarAlt } from "react-icons/fa";
 import showroomBackground from "../assets/showroom.jpg"; // Update the path as needed
 import ReserveModal from "./ReserveModal";
 import axios from "axios";
@@ -288,22 +288,22 @@ const Car = () => {
           <SpecsContainer>
             <SpecItem>
               <FaUsers />
-              <span>{car.seats} Seats</span>
+              <span>{car.seating} Seats</span>
             </SpecItem>
             <SpecItem>
               <FaTachometerAlt />
               <span>{car.transmission}</span>
             </SpecItem>
             <SpecItem>
-              <FaInfoCircle />
+              <FaGasPump />
               <span>{car.fuelType}</span>
             </SpecItem>
             <SpecItem>
               <FaBolt />
-              <span>{car.motorPower}</span>
+              <span>{car.motorPower}HP</span>
             </SpecItem>
             <SpecItem>
-              <FaCheckCircle />
+              <FaCalendarAlt />
               <span>{car.registrationYear}</span>
             </SpecItem>
           </SpecsContainer>
