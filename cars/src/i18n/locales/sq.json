@@ -1,0 +1,185 @@
+{
+  "header": {
+    "title": "Makinë me Qira Premium në Shqipëri",
+    "subtitle": "Përjetoni Shqipërinë me stil me flotën tonë të përzgjedhur me kujdes. Qoftë duke eksploruar Rivierën Shqiptare apo duke naviguar në rrugët e Tiranës, ne kemi automjetin e përkryer për udhëtimin tuaj."
+  },
+  "stats": {
+    "vehicles": "Automjete Cilësore",
+    "clients": "Klientë të Kënaqur",
+    "support": "Mbështetje Lokale"
+  },
+  "specialOffer": {
+    "title": "Ofertë e Veçantë për Qira Afatgjatë",
+    "description": "Përjetoni komoditetin për më gjatë dhe kurseni më shumë. Rezervoni çdo automjet për 10 ditë ose më shumë dhe përfitoni zbritje të veçanta në qiranë tuaj.",
+    "highlight": "Kurseni deri në 25% për qira mbi 10 ditë",
+    "includes": "Përfshin paketën e sigurimit premium falas, kilometrazh të pakufizuar dhe shërbim prioritar për klientët.",
+    "exploreFleet": "Shihni Flotën Tonë"
+  },
+  "whyChooseUs": {
+    "title": "Pse të na Zgjidhni Ne",
+    "features": {
+      "insurance": {
+        "title": "Mbulim i Plotë me Sigurim",
+        "description": "Drejtoni me mendje të qetë duke ditur që jeni të mbuluar plotësisht me paketën tonë gjithëpërfshirëse të sigurimit."
+      },
+      "fleet": {
+        "title": "Flotë Premium",
+        "description": "Zgjidhni nga koleksioni ynë i mirëmbajtur i automjeteve luksoze dhe të besueshme."
+      },
+      "price": {
+        "title": "Garanci për Çmimin më të Mirë",
+        "description": "Ne ofrojmë tarifa konkurruese dhe çmime transparente pa tarifa të fshehura."
+      },
+      "rental": {
+        "title": "Kushte Fleksibël të Qirasë",
+        "description": "Nga udhëtime të shkurtra në qëndrime të zgjatura, ne përshtatemi me orarin tuaj me periudha fleksibël qiraje."
+      },
+      "locations": {
+        "title": "Vendndodhje të Përshtatshme",
+        "description": "Merrni dhe dorëzoni automjetin tuaj në vendndodhje në të gjitha qytetet kryesore dhe aeroportet e Shqipërisë."
+      },
+      "support": {
+        "title": "Mbështetje 24/7",
+        "description": "Ekipi ynë i dedikuar i shërbimit ndaj klientit është gjithmonë gati t'ju ndihmojë kurdo që keni nevojë."
+      }
+    }
+  },
+  "search": {
+    "pickupDate": "Data e Marrjes",
+    "dropoffDate": "Data e Kthimit",
+    "findCar": "Gjej Makinën",
+    "availableToday": "Makinat e Disponueshme Sot"
+  },
+  "reviews": {
+    "title": "Çfarë Thonë Klientët Tanë",
+    "reviewers": {
+      "john": {
+        "text": "Shërbim i mrekullueshëm! Makina ishte në gjendje perfekte dhe stafi ishte jashtëzakonisht i dobishëm. Do të marrë me qira përsëri!",
+        "name": "John Smith",
+        "date": "Mars 2024"
+      },
+      "maria": {
+        "text": "Eksperienca më e mirë e marrjes së makinave me qira në Shqipëri. Procesi ishte i lehtë dhe çmimet ishin shumë konkurruese.",
+        "name": "Maria Garcia",
+        "date": "Shkurt 2024"
+      },
+      "david": {
+        "text": "Flotë e shkëlqyer makinash dhe shërbim profesional. E bëri udhëtimin tonë në Shqipëri të paharrueshëm!",
+        "name": "David Chen",
+        "date": "Janar 2024"
+      }
+    }
+  },
+  "footer": {
+    "company": "CarRental",
+    "description": "Përjetoni komoditet dhe cilësi me shërbimin tonë premium të makinave me qira në Shqipëri. Ne ofrojmë një gamë të gjerë automjetesh për të plotësuar nevojat tuaja të udhëtimit.",
+    "quickLinks": {
+      "title": "Lidhje të Shpejta",
+      "home": "Kryefaqja",
+      "cars": "Makinat Tona",
+      "about": "Rreth Nesh",
+      "contact": "Kontakt"
+    },
+    "contact": {
+      "title": "Na Kontaktoni",
+      "address": "Tiranë, Shqipëri",
+      "phone": "+355 69 XXX XXXX",
+      "email": "info@carental.al"
+    },
+    "social": {
+      "followUs": "Na Ndiqni"
+    },
+    "copyright": "Të gjitha të drejtat e rezervuara."
+  },
+  "navigation": {
+    "menu": "Menyja",
+    "home": "Kryefaqja",
+    "ourCars": "Makinat Tona",
+    "reservations": "Rezervimet",
+    "manageCars": "Menaxho Makinat",
+    "fleet": "Flota"
+  },
+  "errors": {
+    "sessionExpired": "Sesioni juaj ka skaduar. Ju lutem, hyni përsëri.",
+    "loading": "Duke u ngarkuar...",
+    "noData": "Nuk ka të dhëna",
+    "networkError": "Gabim në rrjet. Ju lutem, provoni përsëri."
+  },
+  "carDisplay": {
+    "specs": {
+      "seats": "Vende",
+      "transmission": "Transmisioni",
+      "fuel": "Karburanti",
+      "power": "HP",
+      "year": "Viti",
+      "pricePerDay": "/ditë"
+    },
+    "hover": {
+      "transmission": "Transmisioni",
+      "seats": "Vende",
+      "power": "Fuqia",
+      "fuel": "Karburanti"
+    },
+    "defaultImage": "Foto e makinës"
+  },
+  "carsPage": {
+    "title": "Flota Jonë",
+    "loading": "Duke ngarkuar flotën tonë...",
+    "error": "Dështoi në ngarkimin e makinave. Ju lutemi, provoni përsëri.",
+    "noCars": "Nuk ka makina të disponueshme për momentin"
+  },
+  "carDetails": {
+    "specs": {
+      "seats": "Vende",
+      "transmission": "Transmisioni",
+      "fuel": "Karburanti",
+      "power": "HP",
+      "year": "Viti"
+    },
+    "pricing": {
+      "title": "Çmimi",
+      "perDay": "/ ditë",
+      "conditions": {
+        "age": "Duhet të jeni 21 vjeç e sipër",
+        "license": "Kërkohet patentë e vlefshme",
+        "insurance": "Sigurimi i përfshirë"
+      }
+    },
+    "features": {
+      "title": "Veçoritë"
+    },
+    "bookNow": "Rezervo Tani"
+  },
+  "carCard": {
+    "specs": {
+      "seats": "Vende",
+      "transmission": "Transmisioni",
+      "power": "HP",
+      "fuel": "Karburanti",
+      "year": "Viti"
+    },
+    "perDay": "/ ditë",
+    "bookNow": "Rezervo Tani"
+  },
+  "reserveModal": {
+    "title": "Rezervo",
+    "subtitle": "Ju lutemi plotësoni të dhënat tuaja më poshtë",
+    "dates": {
+      "pickup": "Data e Marrjes",
+      "dropoff": "Data e Kthimit"
+    },
+    "form": {
+      "firstName": "Emri",
+      "lastName": "Mbiemri",
+      "email": "Email",
+      "phone": "Numri i Telefonit"
+    },
+    "errors": {
+      "unavailable": "Kjo makinë nuk është e disponueshme për datat e zgjedhura",
+      "checkAvailability": "Gabim në kontrollin e disponueshmërisë",
+      "reservation": "Gabim në kryerjen e rezervimit"
+    },
+    "success": "Rezervimi u krye me sukses! Do t'ju kontaktojmë së shpejti.",
+    "confirmBooking": "Konfirmo Rezervimin"
+  }
+}

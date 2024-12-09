@@ -2,6 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { motion } from 'framer-motion';
 import { FaShieldAlt, FaCar, FaMoneyBillWave, FaClock, FaMapMarkedAlt, FaHeadset } from 'react-icons/fa';
+import { useTranslation } from 'react-i18next';
 
 const Section = styled.div`
   padding: 80px 20px;
@@ -65,43 +66,45 @@ const CardText = styled.p`
 `;
 
 const WhyChooseUs = () => {
+  const { t } = useTranslation();
+
   const features = [
     {
       icon: <FaShieldAlt />,
-      title: "Full Insurance Coverage",
-      description: "Drive with peace of mind knowing you're fully covered with our comprehensive insurance package."
+      title: t('whyChooseUs.features.insurance.title'),
+      description: t('whyChooseUs.features.insurance.description')
     },
     {
       icon: <FaCar />,
-      title: "Premium Fleet",
-      description: "Choose from our carefully maintained collection of luxury and reliable vehicles."
+      title: t('whyChooseUs.features.fleet.title'),
+      description: t('whyChooseUs.features.fleet.description')
     },
     {
       icon: <FaMoneyBillWave />,
-      title: "Best Price Guarantee",
-      description: "We offer competitive rates and transparent pricing with no hidden fees."
+      title: t('whyChooseUs.features.price.title'),
+      description: t('whyChooseUs.features.price.description')
     },
     {
       icon: <FaClock />,
-      title: "Flexible Rental Terms",
-      description: "From short trips to extended stays, we accommodate your schedule with flexible rental periods."
+      title: t('whyChooseUs.features.rental.title'),
+      description: t('whyChooseUs.features.rental.description')
     },
     {
       icon: <FaMapMarkedAlt />,
-      title: "Convenient Locations",
-      description: "Pick up and drop off your vehicle at locations across Albania's major cities and airports."
+      title: t('whyChooseUs.features.locations.title'),
+      description: t('whyChooseUs.features.locations.description')
     },
     {
       icon: <FaHeadset />,
-      title: "24/7 Support",
-      description: "Our dedicated customer service team is always ready to assist you whenever you need help."
+      title: t('whyChooseUs.features.support.title'),
+      description: t('whyChooseUs.features.support.description')
     }
   ];
 
   return (
     <Section>
       <Container>
-        <Title>Why Choose Us</Title>
+        <Title>{t('whyChooseUs.title')}</Title>
         <Grid>
           {features.map((feature, index) => (
             <Card

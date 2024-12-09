@@ -1,0 +1,185 @@
+{
+  "header": {
+    "title": "Premium Car Rental in Albania",
+    "subtitle": "Experience Albania in style with our carefully selected fleet. Whether you're exploring the Albanian Riviera or navigating the streets of Tirana, we have the perfect vehicle for your journey."
+  },
+  "stats": {
+    "vehicles": "Quality Vehicles",
+    "clients": "Happy Clients",
+    "support": "Local Support"
+  },
+  "specialOffer": {
+    "title": "Extended Stay Special Offer",
+    "description": "Experience luxury for longer and save more. Book any of our vehicles for 10 days or more and unlock exclusive benefits and substantial savings on your rental.",
+    "highlight": "Save up to 25% on 10+ day rentals",
+    "includes": "Includes complimentary premium insurance package, unlimited mileage, and priority customer support.",
+    "exploreFleet": "Explore Our Fleet"
+  },
+  "whyChooseUs": {
+    "title": "Why Choose Us",
+    "features": {
+      "insurance": {
+        "title": "Full Insurance Coverage",
+        "description": "Drive with peace of mind knowing you're fully covered with our comprehensive insurance package."
+      },
+      "fleet": {
+        "title": "Premium Fleet",
+        "description": "Choose from our carefully maintained collection of luxury and reliable vehicles."
+      },
+      "price": {
+        "title": "Best Price Guarantee",
+        "description": "We offer competitive rates and transparent pricing with no hidden fees."
+      },
+      "rental": {
+        "title": "Flexible Rental Terms",
+        "description": "From short trips to extended stays, we accommodate your schedule with flexible rental periods."
+      },
+      "locations": {
+        "title": "Convenient Locations",
+        "description": "Pick up and drop off your vehicle at locations across Albania's major cities and airports."
+      },
+      "support": {
+        "title": "24/7 Support",
+        "description": "Our dedicated customer service team is always ready to assist you whenever you need help."
+      }
+    }
+  },
+  "search": {
+    "pickupDate": "Pick-up Date",
+    "dropoffDate": "Drop-off Date",
+    "findCar": "Find Your Car",
+    "availableToday": "Available Cars Today"
+  },
+  "reviews": {
+    "title": "What Our Customers Say",
+    "reviewers": {
+      "john": {
+        "text": "Amazing service! The car was in perfect condition and the staff was incredibly helpful. Will definitely rent again!",
+        "name": "John Smith",
+        "date": "March 2024"
+      },
+      "maria": {
+        "text": "Best car rental experience in Albania. The process was smooth and the prices were very competitive.",
+        "name": "Maria Garcia",
+        "date": "February 2024"
+      },
+      "david": {
+        "text": "Excellent fleet of cars and professional service. Made our trip to Albania unforgettable!",
+        "name": "David Chen",
+        "date": "January 2024"
+      }
+    }
+  },
+  "footer": {
+    "company": "CarRental",
+    "description": "Experience luxury and comfort with our premium car rental service in Albania. We offer a wide range of vehicles to meet your travel needs.",
+    "quickLinks": {
+      "title": "Quick Links",
+      "home": "Home",
+      "cars": "Our Cars",
+      "about": "About Us",
+      "contact": "Contact"
+    },
+    "contact": {
+      "title": "Contact Us",
+      "address": "Tirana, Albania",
+      "phone": "+355 69 XXX XXXX",
+      "email": "info@carental.al"
+    },
+    "social": {
+      "followUs": "Follow Us"
+    },
+    "copyright": "All rights reserved."
+  },
+  "navigation": {
+    "menu": "Menu",
+    "home": "Home",
+    "ourCars": "Our Cars",
+    "reservations": "Reservations",
+    "manageCars": "Manage Cars",
+    "fleet": "Fleet"
+  },
+  "errors": {
+    "sessionExpired": "Your session has expired. Please log in again.",
+    "loading": "Loading...",
+    "noData": "No data available",
+    "networkError": "Network error. Please try again."
+  },
+  "carDisplay": {
+    "specs": {
+      "seats": "Seats",
+      "transmission": "Transmission",
+      "fuel": "Fuel Type",
+      "power": "HP",
+      "year": "Year",
+      "pricePerDay": "/day"
+    },
+    "hover": {
+      "transmission": "Transmission",
+      "seats": "Seats",
+      "power": "Power",
+      "fuel": "Fuel"
+    },
+    "defaultImage": "Car image"
+  },
+  "carsPage": {
+    "title": "Our Fleet",
+    "loading": "Loading our fleet...",
+    "error": "Failed to load cars. Please try again later.",
+    "noCars": "No cars available at the moment"
+  },
+  "carDetails": {
+    "specs": {
+      "seats": "Seats",
+      "transmission": "Transmission",
+      "fuel": "Fuel Type",
+      "power": "HP",
+      "year": "Year"
+    },
+    "pricing": {
+      "title": "Pricing",
+      "perDay": "/ day",
+      "conditions": {
+        "age": "Must be 21 years old or above",
+        "license": "Valid driver's license required",
+        "insurance": "Insurance included"
+      }
+    },
+    "features": {
+      "title": "Features"
+    },
+    "bookNow": "Book Now"
+  },
+  "carCard": {
+    "specs": {
+      "seats": "Seats",
+      "transmission": "Transmission",
+      "power": "HP",
+      "fuel": "Fuel Type",
+      "year": "Year"
+    },
+    "perDay": "/ day",
+    "bookNow": "Book Now"
+  },
+  "reserveModal": {
+    "title": "Reserve",
+    "subtitle": "Please fill in your details below",
+    "dates": {
+      "pickup": "Pick-up Date",
+      "dropoff": "Drop-off Date"
+    },
+    "form": {
+      "firstName": "First Name",
+      "lastName": "Last Name",
+      "email": "Email",
+      "phone": "Phone Number"
+    },
+    "errors": {
+      "unavailable": "This car is not available for the selected dates",
+      "checkAvailability": "Error checking availability",
+      "reservation": "Error making reservation"
+    },
+    "success": "Reservation submitted successfully! We will contact you shortly.",
+    "confirmBooking": "Confirm Booking"
+  }
+}

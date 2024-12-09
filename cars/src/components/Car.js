@@ -6,6 +6,7 @@ import { FaInfoCircle, FaCheckCircle, FaUsers, FaTachometerAlt, FaBolt, FaGasPum
 import showroomBackground from "../assets/showroom.jpg"; // Update the path as needed
 import ReserveModal from "./ReserveModal";
 import axios from "axios";
+import { useTranslation } from "react-i18next";
 
 const PageContainer = styled.div`
   position: relative;
@@ -226,6 +227,7 @@ const SpecsGrid = styled.div`
 `;
 
 const Car = () => {
+  const { t } = useTranslation();
   const { id } = useParams();
   const [width, setWidth] = useState(window.innerWidth);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -264,9 +266,15 @@ const Car = () => {
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => setIsModalOpen(false);
 
-  if (loading) return <LoadingSpinner>Loading...</LoadingSpinner>;
-  if (error) return <div>Error: {error}</div>;
-  if (!car) return <div>Car not found</div>;
+  if (loading) return <LoadingSpinner>{t('carsPage.loading')}</LoadingSpinner>;
+  if (error) return <div>{t('errors.general')}: {error}</div>;
+  if (!car) return <div>{t('errors.notFound')}</div>;
+
+  const pricingConditions = [
+    t('carDetails.pricing.conditions.age'),
+    t('carDetails.pricing.conditions.license'),
+    t('carDetails.pricing.conditions.insurance'),
+  ];
 
   return (
     <PageContainer>
@@ -278,7 +286,7 @@ const Car = () => {
             </h2>
           </CarInfo>
           <BookNowButton onClick={openModal}>
-            Book Now
+            {t('carDetails.bookNow')}
           </BookNowButton>
         </HeaderContent>
       </CarHeader>
@@ -288,7 +296,7 @@ const Car = () => {
           <SpecsContainer>
             <SpecItem>
               <FaUsers />
-              <span>{car.seating} Seats</span>
+              <span>{car.seating} {t('carDetails.specs.seats')}</span>
             </SpecItem>
             <SpecItem>
               <FaTachometerAlt />
@@ -300,7 +308,7 @@ const Car = () => {
             </SpecItem>
             <SpecItem>
               <FaBolt />
-              <span>{car.motorPower}HP</span>
+              <span>{car.motorPower} {t('carDetails.specs.power')}</span>
             </SpecItem>
             <SpecItem>
               <FaCalendarAlt />
@@ -314,8 +322,8 @@ const Car = () => {
         </CarInfoContainer>
 
         <Card>
-          <h3>Pricing</h3>
-          <Price>${car.price} / day</Price>
+          <h3>{t('carDetails.pricing.title')}</h3>
+          <Price>${car.price} {t('carDetails.pricing.perDay')}</Price>
           <ul>
             {pricingConditions.map((condition, index) => (
               <li key={index}>
@@ -330,7 +338,7 @@ const Car = () => {
           isMobile={width < 768}
           style={{ marginBottom: width < 768 ? 90 : 0 }}
         >
-          <h3>Features</h3>
+          <h3>{t('carDetails.features.title')}</h3>
           <ul>
             {car.features.map((feature, index) => (
               <li key={index}>

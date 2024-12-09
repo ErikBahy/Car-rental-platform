@@ -2,6 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import { FaFacebook, FaInstagram, FaTwitter, FaLinkedin, FaPhone, FaEnvelope, FaMapMarkerAlt } from 'react-icons/fa';
+import { useTranslation } from 'react-i18next';
 
 const FooterContainer = styled.footer`
   background: rgba(0, 0, 0, 0.9);
@@ -15,7 +16,7 @@ const FooterContent = styled.div`
   max-width: 1200px;
   margin: 0 auto;
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  grid-template-columns: 2fr 1fr 1fr;
   gap: 40px;
   
   @media (max-width: 768px) {
@@ -97,26 +98,79 @@ const Copyright = styled.div`
   color: #666;
 `;
 
+const ContactAndSocial = styled(FooterSection)`
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+`;
+
+const ContactInfo = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  margin-top: 20px;
+`;
+
 const Footer = () => {
+  const { t } = useTranslation();
+
   return (
     <FooterContainer>
       <FooterContent>
         <FooterSection>
-          <Logo>CarRental</Logo>
+          <Logo>{t('footer.company')}</Logo>
           <FooterText>
-            Experience luxury and comfort with our premium car rental service in Albania.
-            We offer a wide range of vehicles to meet your travel needs.
+            {t('footer.description')}
           </FooterText>
-          <SocialLinks>
-            <SocialIcon href="https://facebook.com" target="_blank"><FaFacebook /></SocialIcon>
-            <SocialIcon href="https://instagram.com" target="_blank"><FaInstagram /></SocialIcon>
-            <SocialIcon href="https://twitter.com" target="_blank"><FaTwitter /></SocialIcon>
-            <SocialIcon href="https://linkedin.com" target="_blank"><FaLinkedin /></SocialIcon>
-          </SocialLinks>
         </FooterSection>
+
+        <FooterSection>
+          <h3>{t('footer.quickLinks.title')}</h3>
+          <FooterLinks>
+            <FooterLink to="/">{t('footer.quickLinks.home')}</FooterLink>
+            <FooterLink to="/our-cars">{t('footer.quickLinks.cars')}</FooterLink>
+          </FooterLinks>
+        </FooterSection>
+
+        <ContactAndSocial>
+          <div>
+            <h3>{t('footer.contact.title')}</h3>
+            <ContactInfo>
+              <ContactItem>
+                <FaMapMarkerAlt />
+                {t('footer.contact.address')}
+              </ContactItem>
+              <ContactItem>
+                <FaPhone />
+                {t('footer.contact.phone')}
+              </ContactItem>
+              <ContactItem>
+                <FaEnvelope />
+                {t('footer.contact.email')}
+              </ContactItem>
+            </ContactInfo>
+          </div>
+          <div>
+            <h3>{t('footer.social.followUs')}</h3>
+            <SocialLinks>
+              <SocialIcon href="https://facebook.com" target="_blank" aria-label="Facebook">
+                <FaFacebook />
+              </SocialIcon>
+              <SocialIcon href="https://instagram.com" target="_blank" aria-label="Instagram">
+                <FaInstagram />
+              </SocialIcon>
+              <SocialIcon href="https://twitter.com" target="_blank" aria-label="Twitter">
+                <FaTwitter />
+              </SocialIcon>
+              <SocialIcon href="https://linkedin.com" target="_blank" aria-label="LinkedIn">
+                <FaLinkedin />
+              </SocialIcon>
+            </SocialLinks>
+          </div>
+        </ContactAndSocial>
       </FooterContent>
       <Copyright>
-        &copy; {new Date().getFullYear()} CarRental. All rights reserved.
+        &copy; {new Date().getFullYear()} {t('footer.company')}. {t('footer.copyright')}
       </Copyright>
     </FooterContainer>
   );

@@ -13,6 +13,7 @@ import {
 } from "react-icons/fa";
 import { Carousel } from "react-responsive-carousel";
 import "react-responsive-carousel/lib/styles/carousel.min.css";
+import { useTranslation } from "react-i18next";
 
 const Card = styled.div`
   position: relative;
@@ -122,6 +123,7 @@ const Price = styled.div`
 `;
 
 const CarCard = ({ car }) => {
+  const { t } = useTranslation();
   const navigate = useNavigate();
 
   const handleBookNow = (e) => {
@@ -147,11 +149,11 @@ const CarCard = ({ car }) => {
           </Option>
           <Option>
             <FaUsers />
-            {car.seats} Seats
+            {car.seating} {t('carCard.specs.seats')}
           </Option>
           <Option>
             <FaBolt />
-            {car.motorPower}
+            {car.motorPower} {t('carCard.specs.power')}
           </Option>
           <Option>
             <FaGasPump />
@@ -162,9 +164,9 @@ const CarCard = ({ car }) => {
             {car.registrationYear}
           </Option>
         </OptionsGrid>
-        <Price>${car.price} / day</Price>
+        <Price>${car.price} {t('carCard.perDay')}</Price>
         <BookNowButton onClick={handleBookNow}>
-          Book Now <FaArrowRight />
+          {t('carCard.bookNow')} <FaArrowRight />
         </BookNowButton>
       </CarDetails>
     </Card>

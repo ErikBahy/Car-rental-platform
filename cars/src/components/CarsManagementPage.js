@@ -282,16 +282,20 @@ function CarsManagementPage() {
     e.preventDefault();
     
     try {
-      if (selectedFiles.length === 0) {
+      // Only validate images for new cars, not when editing
+      if (modalMode === "add" && selectedFiles.length === 0) {
         toast.error('Please select at least one image');
         return;
       }
 
       const formData = new FormData();
       
-      selectedFiles.forEach(file => {
-        formData.append('images', file);
-      });
+      // Only append images if files were selected
+      if (selectedFiles.length > 0) {
+        selectedFiles.forEach(file => {
+          formData.append('images', file);
+        });
+      }
       
       const carData = {
         make,
@@ -307,18 +311,24 @@ function CarsManagementPage() {
       
       formData.append('carData', JSON.stringify(carData));
       
-      for (let [key, value] of formData.entries()) {
-        console.log(`${key}:`, value instanceof File ? value.name : value);
+      let response;
+      if (modalMode === "add") {
+        response = await axios.post('http://localhost:5000/api/cars', formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          }
+        });
+        toast.success('Car added successfully!');
+      } else {
+        response = await axios.put(`http://localhost:5000/api/cars/${selectedCar._id}`, formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          }
+        });
+        toast.success('Car updated successfully!');
       }
       
-      const response = await axios.post('http://localhost:5000/api/cars', formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        }
-      });
-      
-      console.log('Car created successfully:', response.data);
-      toast.success('Car added successfully!');
+      console.log('Operation completed successfully:', response.data);
       closeModal();
       fetchCars();
       
@@ -327,8 +337,8 @@ function CarsManagementPage() {
       setSelectedFiles([]);
       
     } catch (error) {
-      console.error('Error creating car:', error);
-      toast.error(error.response?.data?.message || 'Error creating car');
+      console.error('Error:', error);
+      toast.error(error.response?.data?.message || 'Error processing request');
     }
   };
 
@@ -443,6 +453,8 @@ function CarsManagementPage() {
                   <option value="Diesel">Diesel</option>
                   <option value="Electric">Electric</option>
                   <option value="Hybrid">Hybrid</option>
+                  <option value="Petrol/LPG(Gas)">Petrol/LPG(Gas)</option>
+
                 </Select>
               </FormGroup>
               <FormGroup>

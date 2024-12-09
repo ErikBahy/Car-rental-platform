@@ -4,6 +4,7 @@ import { FaTimes } from "react-icons/fa";
 import axios from "axios";
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { useTranslation } from 'react-i18next';
 
 const ModalOverlay = styled.div`
   position: fixed;
@@ -194,6 +195,7 @@ const LoadingSpinner = styled.div`
 `;
 
 const ReserveModal = ({ isOpen, onClose, disabled, car }) => {
+  const { t } = useTranslation();
   const [pickupDate, setPickupDate] = useState("");
   const [dropoffDate, setDropoffDate] = useState("");
   const [pickupFocused, setPickupFocused] = useState(false);
@@ -273,30 +275,24 @@ const ReserveModal = ({ isOpen, onClose, disabled, car }) => {
     }
   };
 
-  const handleSubmit = async () => {
-    if (!isAvailable) {
-      setError("This car is not available for the selected dates");
-      return;
-    }
-
+  const handleSubmit = async (e) => {
+    e.preventDefault();
     setLoading(true);
-    setError("");
+    setError(null);
 
-    const reservationData = {
-      carId: car._id,
-      pickupDate,
-      dropoffDate,
-      customer: {
+    try {
+      const reservationData = {
+        carId: car._id,
+        pickupDate,
+        dropoffDate,
         firstName,
         lastName,
         email,
         phone
-      }
-    };
+      };
 
-    try {
       const response = await axios.post('http://localhost:5000/api/reservations', reservationData);
-      toast.success('Reservation submitted successfully! We will contact you shortly.', {
+      toast.success(t('reserveModal.success'), {
         position: "top-center",
         autoClose: 5000,
         hideProgressBar: false,
@@ -312,8 +308,8 @@ const ReserveModal = ({ isOpen, onClose, disabled, car }) => {
       onClose();
     } catch (error) {
       console.error('Error making reservation:', error);
-      setError(error.response?.data?.message || 'Error making reservation');
-      toast.error('Error making reservation. Please try again.', {
+      setError(t('reserveModal.errors.reservation'));
+      toast.error(t('reserveModal.errors.reservation'), {
         position: "top-center",
         autoClose: 5000,
         hideProgressBar: false,
@@ -338,8 +334,8 @@ const ReserveModal = ({ isOpen, onClose, disabled, car }) => {
       <ModalContent>
         <CloseIcon onClick={onClose} />
         <Title>
-          Reserve {car.make} {car.model}
-          <span>Please fill in your details below</span>
+          {t('reserveModal.title')} {car.make} {car.model}
+          <span>{t('reserveModal.subtitle')}</span>
         </Title>
 
         <DateInputsContainer>
@@ -350,7 +346,7 @@ const ReserveModal = ({ isOpen, onClose, disabled, car }) => {
               onChange={handlePickupChange}
               min={new Date().toISOString().split('T')[0]}
               required
-              placeholder="Pick-up Date"
+              placeholder={t('reserveModal.dates.pickup')}
               onFocus={() => {
                 setPickupFocused(true);
                 handleInputClick(pickupInputRef);
@@ -370,7 +366,7 @@ const ReserveModal = ({ isOpen, onClose, disabled, car }) => {
               onChange={handleDropoffChange}
               min={pickupDate || new Date().toISOString().split('T')[0]}
               required
-              placeholder="Drop-off Date"
+              placeholder={t('reserveModal.dates.dropoff')}
               onFocus={() => {
                 setDropoffFocused(true);
                 handleInputClick(dropoffInputRef);
@@ -387,28 +383,28 @@ const ReserveModal = ({ isOpen, onClose, disabled, car }) => {
         <UserInfoContainer>
           <Input
             type="text"
-            placeholder="First Name"
+            placeholder={t('reserveModal.form.firstName')}
             value={firstName}
             onChange={(e) => setFirstName(e.target.value)}
             required
           />
           <Input
             type="text"
-            placeholder="Last Name"
+            placeholder={t('reserveModal.form.lastName')}
             value={lastName}
             onChange={(e) => setLastName(e.target.value)}
             required
           />
           <Input
             type="email"
-            placeholder="Email"
+            placeholder={t('reserveModal.form.email')}
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
           />
           <Input
             type="tel"
-            placeholder="Phone Number"
+            placeholder={t('reserveModal.form.phone')}
             value={phone}
             onChange={(e) => setPhone(e.target.value)}
             required
@@ -421,7 +417,7 @@ const ReserveModal = ({ isOpen, onClose, disabled, car }) => {
           disabled={!isFormValid() || disabled || loading || !isAvailable}
           onClick={handleSubmit}
         >
-          {loading ? <LoadingSpinner /> : 'Confirm Booking'}
+          {loading ? <LoadingSpinner /> : t('reserveModal.confirmBooking')}
         </BookNowButton>
       </ModalContent>
     </ModalOverlay>

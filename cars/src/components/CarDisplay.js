@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import { motion, AnimatePresence } from "framer-motion";
+import { useTranslation } from 'react-i18next';
 
 const DisplayWrapper = styled.div`
   position: relative;
@@ -68,6 +69,7 @@ const Dot = styled.div`
 `;
 
 const CarDisplay = ({ cars, onClick }) => {
+  const { t } = useTranslation();
   const [currentIndex, setCurrentIndex] = useState(0);
 
   const variants = {
@@ -130,15 +132,22 @@ const CarDisplay = ({ cars, onClick }) => {
           onClick={() => onClick(cars[currentIndex]._id)}
         >
           <CarImage 
-            src={cars[currentIndex]?.favouriteImag || 'https://i.imgur.com/CiYQhnU.png'} 
-            alt={cars[currentIndex]?.model} 
+            src={cars[currentIndex]?.favouriteImage || 'https://i.imgur.com/CiYQhnU.png'} 
+            alt={`${cars[currentIndex]?.make} ${cars[currentIndex]?.model}`}
           />
           <CarInfo>
             <h3>{cars[currentIndex]?.model}</h3>
             <p>{cars[currentIndex]?.make} • {cars[currentIndex]?.registrationYear}</p>
-            <p>{cars[currentIndex]?.transmission} • {cars[currentIndex]?.fuelType}</p>
-            <p>{cars[currentIndex]?.seating} Seats • {cars[currentIndex]?.motorPower}</p>
-            <PriceTag>${cars[currentIndex]?.price}/day</PriceTag>
+            <p>
+              {cars[currentIndex]?.transmission} • {cars[currentIndex]?.fuelType}
+            </p>
+            <p>
+              {cars[currentIndex]?.seating} {t('carDisplay.specs.seats')} • 
+              {cars[currentIndex]?.motorPower}
+            </p>
+            <PriceTag>
+              ${cars[currentIndex]?.price}{t('carDisplay.specs.pricePerDay')}
+            </PriceTag>
           </CarInfo>
         </CarCard>
       </AnimatePresence>

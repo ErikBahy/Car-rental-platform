@@ -1,8 +1,10 @@
 // src/components/HeroSection.js
 import React, { useState, useRef } from "react";
 import { HeroSection, SearchBar, DateInput, SearchButton } from "../styles";
+import { useTranslation } from 'react-i18next';
 
 const HeroSectionComponent = () => {
+  const { t } = useTranslation();
   const [pickupDate, setPickupDate] = useState("");
   const [dropoffDate, setDropoffDate] = useState("");
   const [pickupFocused, setPickupFocused] = useState(false);
@@ -52,7 +54,7 @@ const HeroSectionComponent = () => {
             onChange={handlePickupChange}
             min={new Date().toISOString().split('T')[0]}
             required
-            placeholder="Pick-up Date"
+            placeholder={t('search.pickupDate')}
             onFocus={() => {
               setPickupFocused(true);
               handleInputClick(pickupInputRef);
@@ -71,7 +73,7 @@ const HeroSectionComponent = () => {
             onChange={handleDropoffChange}
             min={pickupDate || new Date().toISOString().split('T')[0]}
             required
-            placeholder="Drop-off Date"
+            placeholder={t('search.dropoffDate')}
             onFocus={() => {
               setDropoffFocused(true);
               handleInputClick(dropoffInputRef);
@@ -87,10 +89,10 @@ const HeroSectionComponent = () => {
           onClick={handleSearch}
           disabled={!pickupDate || !dropoffDate}
         >
-          Find Your Car
+          {t('search.findCar')}
         </SearchButton>
         <SearchButton onClick={handleAvailableToday} isSecondary>
-          Available Cars Today
+          {t('search.availableToday')}
         </SearchButton>
       </SearchBar>
     </HeroSection>

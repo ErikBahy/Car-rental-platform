@@ -7,6 +7,7 @@ import {
   FaBolt,
   FaGasPump,
 } from "react-icons/fa";
+import { useTranslation } from 'react-i18next';
 
 const CarDisplayWrapper = styled.div`
   display: flex;
@@ -116,6 +117,8 @@ const PriceTag = styled.div`
 `;
 
 const DesktopCarDisplay = ({ cars, onClick }) => {
+  const { t } = useTranslation();
+
   return (
     <CarDisplayWrapper>
       {cars.map((car) => (
@@ -141,21 +144,21 @@ const DesktopCarDisplay = ({ cars, onClick }) => {
           <HoverInfo>
             <InfoItem>
               <FaCogs />
-              <span>{car.transmission}</span>
+              <span>{t('carDisplay.hover.transmission')}: {car.transmission}</span>
             </InfoItem>
             <InfoItem>
               <FaUsers />
-              <span>{car.seating} Seats</span>
+              <span>{car.seating} {t('carDisplay.hover.seats')}</span>
             </InfoItem>
             <InfoItem>
               <FaBolt />
-              <span>{car.motorPower}</span>
+              <span>{t('carDisplay.hover.power')}: {car.motorPower}</span>
             </InfoItem>
             <InfoItem>
               <FaGasPump />
-              <span>{car.fuelType}</span>
+              <span>{t('carDisplay.hover.fuel')}: {car.fuelType}</span>
             </InfoItem>
-            <PriceTag>${car.price}/day</PriceTag>
+            <PriceTag>${car.price}{t('carDisplay.specs.pricePerDay')}</PriceTag>
           </HoverInfo>
         </CarContainer>
       ))}

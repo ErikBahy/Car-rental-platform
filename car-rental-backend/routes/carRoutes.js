@@ -132,29 +132,50 @@ router.post('/', upload.array('images', 10), async (req, res) => {
 });
 
 // Update a car
-router.put('/:id', async (req, res) => {
+router.put('/:id', upload.array('images', 10), async (req, res) => {
   try {
+    console.log('1. Received PUT request for ID:', req.params.id);
+    console.log('2. Request body:', req.body);
+    
     const car = await Car.findById(req.params.id);
-    if (car == null) {
+    console.log('3. Found car in database:', car);
+    
+    if (!car) {
+      console.log('Car not found!');
       return res.status(404).json({ message: 'Car not found' });
     }
 
-    car.make = req.body.make != null ? req.body.make : car.make;
-    car.model = req.body.model != null ? req.body.model : car.model;
-    car.registrationYear = req.body.registrationYear != null ? req.body.registrationYear : car.registrationYear;
-    car.price = req.body.price != null ? req.body.price : car.price;
-    car.isFavourite = req.body.isFavourite != null ? req.body.isFavourite : car.isFavourite;
-    car.favouriteImage = req.body.isFavourite ? req.body.favouriteImage : car.favouriteImage;
-    car.transmission = req.body.transmission != null ? req.body.transmission : car.transmission;
-    car.fuelType = req.body.fuelType != null ? req.body.fuelType : car.fuelType;
-    car.seating = req.body.seating != null ? req.body.seating : car.seating;
-    car.motorPower = req.body.motorPower != null ? req.body.motorPower : car.motorPower;
-    car.features = req.body.features != null ? req.body.features : car.features;
-    car.photos = req.body.photos != null ? req.body.photos : car.photos;
+    // Parse the car data
+    const carData = JSON.parse(req.body.carData);
+    console.log('4. Parsed car data:', carData);
 
-    const updatedCar = await car.save();
-    res.json(updatedCar);
+    // Update fields one by one with logging
+    console.log('5. Updating fields...');
+    
+    car.make = carData.make;
+    car.model = carData.model;
+    car.registrationYear = carData.registrationYear;
+    car.price = carData.price;
+    car.transmission = carData.transmission;
+    car.fuelType = carData.fuelType;
+    car.seating = carData.seating;
+    car.motorPower = carData.motorPower;
+    car.features = carData.features;
+
+    console.log('6. Updated car object before save:', car);
+
+    // Try saving with error catching
+    try {
+      const updatedCar = await car.save();
+      console.log('7. Save successful. Updated car:', updatedCar);
+      res.json(updatedCar);
+    } catch (saveError) {
+      console.error('Save error:', saveError);
+      throw saveError;
+    }
+
   } catch (err) {
+    console.error('Update error:', err);
     res.status(400).json({ message: err.message });
   }
 });

@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import { motion } from "framer-motion";
+import { useTranslation } from 'react-i18next';
 
 const OfferSection = styled.div`
   position: relative;
@@ -103,6 +104,8 @@ const LearnMoreButton = styled(motion.button)`
 `;
 
 const SpecialOffer = () => {
+  const { t } = useTranslation();
+
   return (
     <OfferSection>
       <ContentContainer
@@ -111,24 +114,21 @@ const SpecialOffer = () => {
         viewport={{ once: true }}
         transition={{ duration: 0.8 }}
       >
-        <Title>Extended Stay Special Offer</Title>
+        <Title>{t('specialOffer.title')}</Title>
         <Description>
-          Experience luxury for longer and save more. Book any of our vehicles
-          for 10 days or more and unlock exclusive benefits and substantial savings
-          on your rental.
+          {t('specialOffer.description')}
         </Description>
         <HighlightBox>
-          Save up to 25% on 10+ day rentals
+          {t('specialOffer.highlight')}
         </HighlightBox>
         <Description>
-          Includes complimentary premium insurance package, unlimited mileage,
-          and priority customer support.
+          {t('specialOffer.includes')}
         </Description>
         <LearnMoreButton
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
         >
-          Explore Our Fleet
+          {t('specialOffer.exploreFleet')}
         </LearnMoreButton>
       </ContentContainer>
     </OfferSection>

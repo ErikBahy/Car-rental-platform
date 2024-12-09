@@ -5,6 +5,7 @@ import CarCard from "./CarCard";
 import { motion } from "framer-motion";
 import Footer from './Footer';
 import showroomImage from '../assets/showroom.jpg';
+import { useTranslation } from 'react-i18next';
 
 const PageContainer = styled(motion.div)`
   position: relative;
@@ -84,6 +85,7 @@ const ErrorState = styled(motion.div)`
 `;
 
 const CarsPage = () => {
+  const { t } = useTranslation();
   const [cars, setCars] = useState([]);
   console.log(cars);
   const [loading, setLoading] = useState(true);
@@ -97,14 +99,14 @@ const CarsPage = () => {
         setCars(response.data);
         setError(null);
       } catch (err) {
-        setError("Failed to load cars. Please try again later.");
+        setError(t('carsPage.error'));
       } finally {
         setLoading(false);
       }
     };
 
     fetchCars();
-  }, []);
+  }, [t]);
 
   return (
     <PageContainer
@@ -115,19 +117,22 @@ const CarsPage = () => {
       <Background />
       <ContentWrapper>
         <Header>
-          <Title>Our Fleet</Title>
+          <Title>{t('carsPage.title')}</Title>
         </Header>
 
-        {loading && <LoadingState>Loading our fleet...</LoadingState>}
+        {loading && <LoadingState>{t('carsPage.loading')}</LoadingState>}
         {error && <ErrorState>{error}</ErrorState>}
-        {!loading && !error && (
+        {!loading && !error && cars.length === 0 && (
+          <LoadingState>{t('carsPage.noCars')}</LoadingState>
+        )}
+        {!loading && !error && cars.length > 0 && (
           <CarsGrid
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
           >
             {cars.map((car) => (
-              <CarCard key={car.id} car={car} />
+              <CarCard key={car._id} car={car} />
             ))}
           </CarsGrid>
         )}

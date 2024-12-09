@@ -2,6 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { motion } from 'framer-motion';
 import { FaStar } from 'react-icons/fa';
+import { useTranslation } from 'react-i18next';
 
 const ReviewsSection = styled.div`
   padding: 60px 10px;
@@ -99,37 +100,39 @@ const ReviewDate = styled.span`
   color: rgba(255, 255, 255, 0.7);
 `;
 
-const reviews = [
-  {
-    id: 1,
-    rating: 5,
-    text: "Amazing service! The car was in perfect condition and the staff was incredibly helpful. Will definitely rent again!",
-    name: "John Smith",
-    date: "March 2024",
-    image: "https://i.pravatar.cc/150?img=1"
-  },
-  {
-    id: 2,
-    rating: 5,
-    text: "Best car rental experience in Albania. The process was smooth and the prices were very competitive.",
-    name: "Maria Garcia",
-    date: "February 2024",
-    image: "https://i.pravatar.cc/150?img=2"
-  },
-  {
-    id: 3,
-    rating: 5,
-    text: "Excellent fleet of cars and professional service. Made our trip to Albania unforgettable!",
-    name: "David Chen",
-    date: "January 2024",
-    image: "https://i.pravatar.cc/150?img=3"
-  }
-];
-
 const CustomerReviews = () => {
+  const { t } = useTranslation();
+
+  const reviews = [
+    {
+      id: 1,
+      rating: 5,
+      text: t('reviews.reviewers.john.text'),
+      name: t('reviews.reviewers.john.name'),
+      date: t('reviews.reviewers.john.date'),
+      image: "https://i.pravatar.cc/150?img=1"
+    },
+    {
+      id: 2,
+      rating: 5,
+      text: t('reviews.reviewers.maria.text'),
+      name: t('reviews.reviewers.maria.name'),
+      date: t('reviews.reviewers.maria.date'),
+      image: "https://i.pravatar.cc/150?img=2"
+    },
+    {
+      id: 3,
+      rating: 5,
+      text: t('reviews.reviewers.david.text'),
+      name: t('reviews.reviewers.david.name'),
+      date: t('reviews.reviewers.david.date'),
+      image: "https://i.pravatar.cc/150?img=3"
+    }
+  ];
+
   return (
     <ReviewsSection>
-      <SectionTitle>What Our Customers Say</SectionTitle>
+      <SectionTitle>{t('reviews.title')}</SectionTitle>
       <ReviewsGrid>
         {reviews.map((review, index) => (
           <ReviewCard

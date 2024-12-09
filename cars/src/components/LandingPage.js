@@ -9,6 +9,7 @@ import { motion } from "framer-motion";
 import SpecialOffer from './SpecialOffer';
 import CustomerReviews from './CustomerReviews';
 import WhyChooseUs from './WhyChooseUs';
+import { useTranslation } from 'react-i18next';
 
 const PageContainer = styled.div`
   flex: 1;
@@ -180,6 +181,7 @@ const PromptText = styled.div`
 `;
 
 const HomePage = () => {
+  const { t } = useTranslation();
   const [cars, setCars] = useState([]);
   const [opacity, setOpacity] = useState(0.5);
   const [arrowOpacity, setArrowOpacity] = useState(1);
@@ -262,7 +264,7 @@ const HomePage = () => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
         >
-          Premium Car Rental in Albania
+          {t('header.title')}
         </MainTitle>
         <Subtitle
           as={motion.p}
@@ -270,9 +272,7 @@ const HomePage = () => {
           animate={{ opacity: 1 }}
           transition={{ duration: 0.8, delay: 0.3 }}
         >
-          Experience Albania in style with our carefully selected fleet.
-          Whether you're exploring the Albanian Riviera or navigating the streets of Tirana,
-          we have the perfect vehicle for your journey.
+          {t('header.subtitle')}
         </Subtitle>
         <HeroSectionComponent />
         <StatsContainer
@@ -282,15 +282,15 @@ const HomePage = () => {
         >
           <StatItem>
             <div className="number">15+</div>
-            <div className="label">Quality Vehicles</div>
+            <div className="label">{t('stats.vehicles')}</div>
           </StatItem>
           <StatItem>
             <div className="number">500+</div>
-            <div className="label">Happy Clients</div>
+            <div className="label">{t('stats.clients')}</div>
           </StatItem>
           <StatItem>
             <div className="number">24/7</div>
-            <div className="label">Local Support</div>
+            <div className="label">{t('stats.support')}</div>
           </StatItem>
         </StatsContainer>
         <ScrollPrompt
@@ -314,9 +314,9 @@ const HomePage = () => {
         </ScrollPrompt>
       </HeroContent>
       <ContentWrapper>
-        <PromptText>
-          Our Clients' Most Popular Choices
-        </PromptText>
+        {/* <PromptText>
+          {t('specialOffer.title')}
+        </PromptText> */}
         <DesktopCarDisplay cars={favouriteCars} onClick={handleCarClick} />
         <SpecialOffer />
         <WhyChooseUs />

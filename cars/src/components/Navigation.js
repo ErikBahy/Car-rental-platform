@@ -3,6 +3,8 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { motion, AnimatePresence } from "framer-motion";
 import { useSwipeable } from "react-swipeable";
+import LanguageSwitcher from './LanguageSwitcher';
+import { useTranslation } from 'react-i18next';
 
 const Nav = styled.nav`
   background-color: rgba(5, 6, 6, 0.7);
@@ -129,6 +131,22 @@ const FleetButton = styled.button`
   }
 `;
 
+const NavActions = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-left: auto;
+  padding-right: 1rem;
+  
+  @media (max-width: 768px) {
+    position: ${({ isOpen }) => isOpen ? 'fixed' : 'static'};
+    bottom: 2rem;
+    left: 50%;
+    transform: ${({ isOpen }) => isOpen ? 'translateX(-50%)' : 'none'};
+    z-index: 1000;
+  }
+`;
+
 const drawerVariants = {
   open: {
     x: 0,
@@ -163,6 +181,7 @@ const closeButtonVariants = {
 };
 
 function Navigation({ isOpen, setIsOpen }) {
+  const { t } = useTranslation();
   const toggleMenu = () => setIsOpen(!isOpen);
   const isMobile = window.innerWidth < 768;
   const location = useLocation();
@@ -195,18 +214,24 @@ function Navigation({ isOpen, setIsOpen }) {
   };
 
   const getNavigationItems = () => {
-    const baseItems = ["Home", "Our Cars"];
-    return checkManagerStatus() 
-      ? [...baseItems, "Reservations", "Manage Cars"]
-      : baseItems;
+    const baseItems = [
+      { key: "home", path: "/" },
+      { key: "ourCars", path: "/our-cars" }
+    ];
+    
+    if (checkManagerStatus()) {
+      baseItems.push(
+        { key: "reservations", path: "/reservations" },
+        { key: "manageCars", path: "/manage-cars" }
+      );
+    }
+    
+    return baseItems;
   };
 
   return (
     <Nav>
-      <MenuButton onClick={toggleMenu}>☰ Menu</MenuButton>
-      {!isOpen && <FleetButton onClick={handleFleetClick}>
-        Fleet
-      </FleetButton>}
+      <MenuButton onClick={toggleMenu}>{t('navigation.menu')}</MenuButton>
       <AnimatePresence>
         {(isOpen || !isMobile) && (
           <NavContent
@@ -228,41 +253,31 @@ function Navigation({ isOpen, setIsOpen }) {
               </CloseButton>
             )}
             <NavList>
-              {getNavigationItems().map(
-                (item, index) => (
-                  <NavItem
-                    key={item}
-                    variants={itemVariants}
-                    initial="closed"
-                    animate="open"
-                    exit="closed"
-                    custom={index}
+              {getNavigationItems().map((item, index) => (
+                <NavItem
+                  key={item.key}
+                  variants={itemVariants}
+                  initial="closed"
+                  animate="open"
+                  exit="closed"
+                  custom={index}
+                >
+                  <NavLink
+                    to={item.path}
+                    className={location.pathname === item.path ? "active" : ""}
+                    onClick={isMobile ? toggleMenu : undefined}
                   >
-                    <NavLink
-                      to={
-                        item === "Home"
-                          ? "/"
-                          : `/${item.toLowerCase().replace(" ", "-")}`
-                      }
-                      className={
-                        location.pathname ===
-                        (item === "Home"
-                          ? "/"
-                          : `/${item.toLowerCase().replace(" ", "-")}`)
-                          ? "active"
-                          : ""
-                      }
-                      onClick={isMobile ? toggleMenu : undefined}
-                    >
-                      {item}
-                    </NavLink>
-                  </NavItem>
-                )
-              )}
+                    {t(`navigation.${item.key}`)}
+                  </NavLink>
+                </NavItem>
+              ))}
             </NavList>
           </NavContent>
         )}
       </AnimatePresence>
+      <NavActions isOpen={isOpen}>
+        <LanguageSwitcher />
+      </NavActions>
     </Nav>
   );
 }
