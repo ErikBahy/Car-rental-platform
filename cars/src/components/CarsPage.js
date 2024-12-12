@@ -9,6 +9,7 @@ import { useTranslation } from 'react-i18next';
 import { useLocation } from 'react-router-dom';
 import DateRangeFilter from './DateRangeFilter';
 import { toast } from 'react-toastify';
+import API_BASE_URL from '../config/api';
 
 const PageContainer = styled(motion.div)`
   position: relative;
@@ -129,10 +130,10 @@ const CarsPage = () => {
     const fetchCars = async () => {
       try {
         setLoading(true);
-        let url = "http://localhost:5000/api/cars";
+        let url = `${API_BASE_URL}/cars`;
         
         if (dateFilter.pickup && dateFilter.dropoff) {
-          url = `http://localhost:5000/api/reservations/available-cars?startDate=${dateFilter.pickup}&endDate=${dateFilter.dropoff}`;
+          url = `${API_BASE_URL}/reservations/available-cars?startDate=${dateFilter.pickup}&endDate=${dateFilter.dropoff}`;
         }
         
         const response = await axios.get(url);

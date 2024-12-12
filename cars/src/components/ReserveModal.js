@@ -6,6 +6,8 @@ import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useTranslation } from 'react-i18next';
 
+const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
+
 const ModalOverlay = styled.div`
   position: fixed;
   top: 0;
@@ -255,7 +257,7 @@ const ReserveModal = ({ isOpen, onClose, disabled, car }) => {
   const checkAvailability = async (pickup, dropoff) => {
     try {
       const response = await axios.get(
-        `http://localhost:5000/api/reservations/check-availability/${car._id}`,
+        `${API_BASE_URL}/reservations/check-availability/${car._id}`,
         {
           params: {
             startDate: pickup,
@@ -293,7 +295,7 @@ const ReserveModal = ({ isOpen, onClose, disabled, car }) => {
         }
       };
 
-      const response = await axios.post('http://localhost:5000/api/reservations', reservationData);
+      const response = await axios.post(`${API_BASE_URL}/reservations`, reservationData);
       toast.success(t('reserveModal.success'), {
         position: "top-center",
         autoClose: 5000,

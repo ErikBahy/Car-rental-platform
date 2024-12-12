@@ -10,6 +10,7 @@ import SpecialOffer from './SpecialOffer';
 import CustomerReviews from './CustomerReviews';
 import WhyChooseUs from './WhyChooseUs';
 import { useTranslation } from 'react-i18next';
+import API_BASE_URL from '../config/api';
 
 const PageContainer = styled.div`
   flex: 1;
@@ -65,7 +66,7 @@ const StatsContainer = styled(motion.div)`
   justify-content: center;
   gap: 30px;
   position: absolute;
-  bottom: 60px;
+  bottom: 80px;
   right: 40px;
   margin: 0;
   
@@ -227,7 +228,7 @@ const HomePage = () => {
   useEffect(() => {
     const fetchCars = async () => {
       try {
-        const response = await axios.get("http://localhost:5000/api/cars");
+        const response = await axios.get(`${API_BASE_URL}/cars`);
         setCars(response.data);
       } catch (error) {
         console.error("Error fetching cars data:", error);
@@ -336,10 +337,9 @@ const HomePage = () => {
         </ScrollPrompt>
       </HeroContent>
       <ContentWrapper>
-        <SectionDescription>
-          <h2>{t('carDisplay.featured.title')}</h2>
-          <p>{t('carDisplay.featured.description')}</p>
-        </SectionDescription>
+        {/* <PromptText>
+          {t('specialOffer.title')}
+        </PromptText> */}
         <DesktopCarDisplay cars={favouriteCars} onClick={handleCarClick} />
         <SpecialOffer />
         <WhyChooseUs />

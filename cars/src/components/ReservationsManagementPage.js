@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import styled from "styled-components";
+import API_BASE_URL from '../config/api';
 
 const Container = styled.div`
   padding: 1rem;
@@ -132,7 +133,7 @@ function ReservationsManagementPage() {
   const fetchReservations = async () => {
     try {
       setLoading(true);
-      const response = await axios.get("http://localhost:5000/api/reservations");
+      const response = await axios.get(`${API_BASE_URL}/reservations`);
       setReservations(response.data);
       setError(null);
     } catch (error) {
@@ -149,7 +150,7 @@ function ReservationsManagementPage() {
 
   const handleStatusUpdate = async (reservationId, newStatus) => {
     try {
-      await axios.patch(`http://localhost:5000/api/reservations/${reservationId}/status`, {
+      await axios.patch(`${API_BASE_URL}/reservations/${reservationId}/status`, {
         status: newStatus
       });
       fetchReservations();

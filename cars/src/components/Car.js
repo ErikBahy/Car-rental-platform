@@ -7,6 +7,7 @@ import showroomBackground from "../assets/showroom.jpg"; // Update the path as n
 import ReserveModal from "./ReserveModal";
 import axios from "axios";
 import { useTranslation } from "react-i18next";
+import API_BASE_URL from '../config/api';
 
 const PageContainer = styled.div`
   position: relative;
@@ -238,7 +239,7 @@ const Car = () => {
   useEffect(() => {
     const fetchCarDetails = async () => {
       try {
-        const response = await axios.get(`http://localhost:5000/api/cars/${id}`);
+        const response = await axios.get(`${API_BASE_URL}/cars/${id}`);
         setCar(response.data);
       } catch (err) {
         setError(err.message);

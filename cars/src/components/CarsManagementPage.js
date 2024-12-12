@@ -211,7 +211,7 @@ function CarsManagementPage() {
 
   const fetchCars = async () => {
     try {
-      const response = await axios.get("http://localhost:5000/api/cars");
+      const response = await axios.get(`${API_BASE_URL}/cars`);
       setCars(response.data);
     } catch (error) {
       console.error("Error fetching cars:", error);
@@ -346,7 +346,7 @@ function CarsManagementPage() {
   const handleDelete = async (id) => {
     if (window.confirm("Are you sure you want to delete this car?")) {
       try {
-        await axios.delete(`http://localhost:5000/api/cars/${id}`);
+        await axios.delete(`${API_BASE_URL}/cars/${id}`);
         fetchCars();
       } catch (error) {
         console.error("Error deleting car:", error);
@@ -356,7 +356,7 @@ function CarsManagementPage() {
 
   const handleDeleteImage = async (carId, publicId) => {
     try {
-      await axios.delete(`http://localhost:5000/api/cars/${carId}/images/${publicId}`);
+      await axios.delete(`${API_BASE_URL}/cars/${carId}/images/${publicId}`);
     } catch (error) {
       console.error('Error deleting image:', error);
     }
