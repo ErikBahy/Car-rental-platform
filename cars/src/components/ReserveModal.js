@@ -285,10 +285,12 @@ const ReserveModal = ({ isOpen, onClose, disabled, car }) => {
         carId: car._id,
         pickupDate,
         dropoffDate,
-        firstName,
-        lastName,
-        email,
-        phone
+        customer: {
+          firstName,
+          lastName,
+          email,
+          phone
+        }
       };
 
       const response = await axios.post('http://localhost:5000/api/reservations', reservationData);

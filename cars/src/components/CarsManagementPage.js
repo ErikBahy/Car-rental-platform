@@ -3,6 +3,7 @@ import axios from "axios";
 import styled from "styled-components";
 import { toast } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
+import API_BASE_URL from '../config/api';
 
 const Container = styled.div`
   padding: 1rem;
@@ -313,14 +314,14 @@ function CarsManagementPage() {
       
       let response;
       if (modalMode === "add") {
-        response = await axios.post('http://localhost:5000/api/cars', formData, {
+        response = await axios.post(`${API_BASE_URL}/cars`, formData, {
           headers: {
             'Content-Type': 'multipart/form-data',
           }
         });
         toast.success('Car added successfully!');
       } else {
-        response = await axios.put(`http://localhost:5000/api/cars/${selectedCar._id}`, formData, {
+        response = await axios.put(`${API_BASE_URL}/cars/${selectedCar._id}`, formData, {
           headers: {
             'Content-Type': 'multipart/form-data',
           }

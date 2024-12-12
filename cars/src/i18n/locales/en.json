@@ -45,6 +45,8 @@
     }
   },
   "search": {
+    "filter": "Filter Cars",
+    "clear": "Clear Filter",
     "pickupDate": "Pick-up Date",
     "dropoffDate": "Drop-off Date",
     "findCar": "Find Your Car",
@@ -120,13 +122,18 @@
       "power": "Power",
       "fuel": "Fuel"
     },
-    "defaultImage": "Car image"
+    "defaultImage": "Car image",
+    "featured": {
+      "title": "Our Premium Selection",
+      "description": "Discover our handpicked collection of premium vehicles, each chosen to provide you with the perfect blend of comfort, style, and performance. From luxurious sedans to versatile SUVs, these vehicles represent the finest options in our fleet."
+    }
   },
   "carsPage": {
     "title": "Our Fleet",
     "loading": "Loading our fleet...",
     "error": "Failed to load cars. Please try again later.",
-    "noCars": "No cars available at the moment"
+    "noCars": "No cars available at the moment",
+    "minimumDaysError": "Please select a minimum rental period of 2 days"
   },
   "carDetails": {
     "specs": {

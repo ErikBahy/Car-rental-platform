@@ -2,6 +2,7 @@
 import React, { useState, useRef } from "react";
 import { HeroSection, SearchBar, DateInput, SearchButton } from "../styles";
 import { useTranslation } from 'react-i18next';
+import { useNavigate } from 'react-router-dom';
 
 const HeroSectionComponent = () => {
   const { t } = useTranslation();
@@ -11,6 +12,7 @@ const HeroSectionComponent = () => {
   const [dropoffFocused, setDropoffFocused] = useState(false);
   const pickupInputRef = useRef(null);
   const dropoffInputRef = useRef(null);
+  const navigate = useNavigate();
 
   const handlePickupChange = (e) => {
     const selectedDate = e.target.value;
@@ -33,15 +35,20 @@ const HeroSectionComponent = () => {
   };
 
   const handleAvailableToday = () => {
-    const today = new Date().toISOString().split('T')[0];
-    setPickupDate(today);
-    const tomorrow = new Date();
-    tomorrow.setDate(tomorrow.getDate() + 1);
-    setDropoffDate(tomorrow.toISOString().split('T')[0]);
+    const today = new Date();
+    const twoDaysLater = new Date();
+    twoDaysLater.setDate(today.getDate() + 2);
+
+    const formattedToday = today.toISOString().split('T')[0];
+    const formattedTwoDays = twoDaysLater.toISOString().split('T')[0];
+
+    navigate(`/our-cars?pickup=${formattedToday}&dropoff=${formattedTwoDays}`);
   };
 
   const handleSearch = () => {
-    console.log("Search with dates:", { pickupDate, dropoffDate });
+    if (pickupDate && dropoffDate) {
+      navigate(`/our-cars?pickup=${pickupDate}&dropoff=${dropoffDate}`);
+    }
   };
 
   return (

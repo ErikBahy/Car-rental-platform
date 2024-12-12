@@ -6,6 +6,9 @@ import { motion } from "framer-motion";
 import Footer from './Footer';
 import showroomImage from '../assets/showroom.jpg';
 import { useTranslation } from 'react-i18next';
+import { useLocation } from 'react-router-dom';
+import DateRangeFilter from './DateRangeFilter';
+import { toast } from 'react-toastify';
 
 const PageContainer = styled(motion.div)`
   position: relative;
@@ -36,11 +39,30 @@ const Background = styled.div`
 `;
 
 const ContentWrapper = styled.div`
-  flex: 1;
+  max-width: 1800px;
   margin: 0 auto;
   width: 100%;
-  padding-bottom: 60px;
+  padding: 20px;
   position: relative;
+`;
+
+const CarsGrid = styled(motion.div)`
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 20px;
+  justify-items: center;
+`;
+
+const FilterCard = styled.div`
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.7);
+  border-radius: 10px;
+  border: 1px solid rgba(255, 215, 0, 0.2);
+  overflow: hidden;
+  transition: transform 0.3s ease;
+  min-width: 280px;
+  max-width: 350px;
 `;
 
 const Header = styled.div`
@@ -60,16 +82,6 @@ const Title = styled.h1`
   }
 `;
 
-const CarsGrid = styled(motion.div)`
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  gap: 20px;
-  padding: 20px;
-  justify-items: center;
-  max-width: 1400px;
-  margin: 0 auto;
-`;
-
 const LoadingState = styled(motion.div)`
   text-align: center;
   color: #ffd700;
@@ -87,26 +99,78 @@ const ErrorState = styled(motion.div)`
 const CarsPage = () => {
   const { t } = useTranslation();
   const [cars, setCars] = useState([]);
-  console.log(cars);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [dateFilter, setDateFilter] = useState({ pickup: '', dropoff: '' });
+  const location = useLocation();
+
+  useEffect(() => {
+    const params = new URLSearchParams(location.search);
+    const pickup = params.get('pickup');
+    const dropoff = params.get('dropoff');
+    
+    if (pickup && dropoff) {
+      const pickupDate = new Date(pickup);
+      const dropoffDate = new Date(dropoff);
+      const daysDifference = Math.ceil((dropoffDate - pickupDate) / (1000 * 60 * 60 * 24));
+      
+      if (daysDifference >= 2) {
+        setDateFilter({ pickup, dropoff });
+      } else {
+        toast.error(t('carsPage.minimumDaysError'), {
+          position: "top-center",
+          theme: "dark"
+        });
+      }
+    }
+  }, [location, t]);
 
   useEffect(() => {
     const fetchCars = async () => {
       try {
         setLoading(true);
-        const response = await axios.get("http://localhost:5000/api/cars");
+        let url = "http://localhost:5000/api/cars";
+        
+        if (dateFilter.pickup && dateFilter.dropoff) {
+          url = `http://localhost:5000/api/reservations/available-cars?startDate=${dateFilter.pickup}&endDate=${dateFilter.dropoff}`;
+        }
+        
+        const response = await axios.get(url);
         setCars(response.data);
         setError(null);
       } catch (err) {
         setError(t('carsPage.error'));
+        toast.error(t('carsPage.error'), {
+          position: "top-center",
+          theme: "dark"
+        });
       } finally {
         setLoading(false);
       }
     };
 
     fetchCars();
-  }, [t]);
+  }, [dateFilter, t]);
+
+  const handleFilterChange = (newDates) => {
+    if (!newDates.pickup || !newDates.dropoff) {
+      setDateFilter({ pickup: '', dropoff: '' });
+      return;
+    }
+
+    const pickupDate = new Date(newDates.pickup);
+    const dropoffDate = new Date(newDates.dropoff);
+    const daysDifference = Math.ceil((dropoffDate - pickupDate) / (1000 * 60 * 60 * 24));
+
+    if (daysDifference >= 2) {
+      setDateFilter(newDates);
+    } else {
+      toast.error(t('carsPage.minimumDaysError'), {
+        position: "top-center",
+        theme: "dark"
+      });
+    }
+  };
 
   return (
     <PageContainer
@@ -115,29 +179,36 @@ const CarsPage = () => {
       transition={{ duration: 0.5 }}
     >
       <Background />
+      <Header>
+        <Title>{t('carsPage.title')}</Title>
+      </Header>
+      
       <ContentWrapper>
-        <Header>
-          <Title>{t('carsPage.title')}</Title>
-        </Header>
-
+        <CarsGrid
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+        >
+          <FilterCard>
+            <DateRangeFilter 
+              initialDates={dateFilter}
+              onFilterChange={handleFilterChange}
+            />
+          </FilterCard>
+          
+          {!loading && !error && cars.length > 0 && 
+            cars.map((car) => (
+              <CarCard key={car._id} car={car} />
+            ))
+          }
+        </CarsGrid>
+        
         {loading && <LoadingState>{t('carsPage.loading')}</LoadingState>}
         {error && <ErrorState>{error}</ErrorState>}
         {!loading && !error && cars.length === 0 && (
           <LoadingState>{t('carsPage.noCars')}</LoadingState>
         )}
-        {!loading && !error && cars.length > 0 && (
-          <CarsGrid
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-          >
-            {cars.map((car) => (
-              <CarCard key={car._id} car={car} />
-            ))}
-          </CarsGrid>
-        )}
       </ContentWrapper>
-      {/* <Footer /> */}
     </PageContainer>
   );
 };

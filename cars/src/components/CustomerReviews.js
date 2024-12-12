@@ -118,7 +118,7 @@ const CustomerReviews = () => {
       text: t('reviews.reviewers.maria.text'),
       name: t('reviews.reviewers.maria.name'),
       date: t('reviews.reviewers.maria.date'),
-      image: "https://i.pravatar.cc/150?img=2"
+      image: "https://albaniatech.org/wp-content/uploads/2024/02/2024022210121586281-scaled-e1708598299330.jpeg"
     },
     {
       id: 3,
@@ -126,7 +126,7 @@ const CustomerReviews = () => {
       text: t('reviews.reviewers.david.text'),
       name: t('reviews.reviewers.david.name'),
       date: t('reviews.reviewers.david.date'),
-      image: "https://i.pravatar.cc/150?img=3"
+      image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQozVV6Zt-sjQlGFPrBvjoncuOpq7GRS3LYug&s"
     }
   ];
 

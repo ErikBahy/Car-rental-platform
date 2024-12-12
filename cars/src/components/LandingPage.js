@@ -65,7 +65,7 @@ const StatsContainer = styled(motion.div)`
   justify-content: center;
   gap: 30px;
   position: absolute;
-  bottom: 80px;
+  bottom: 60px;
   right: 40px;
   margin: 0;
   
@@ -178,6 +178,28 @@ const PromptText = styled.div`
   padding: 10px 20px;
   border-radius: 5px;
   z-index: 1;
+`;
+
+const SectionDescription = styled.div`
+  text-align: center;
+  margin: 40px auto 20px;
+  max-width: 800px;
+  padding: 0 20px;
+
+  h2 {
+    color: #ffd700;
+    font-size: 2rem;
+    margin-bottom: 15px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+  }
+
+  p {
+    color: white;
+    font-size: 1.1rem;
+    line-height: 1.6;
+    opacity: 0.9;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.7);
+  }
 `;
 
 const HomePage = () => {
@@ -314,9 +336,10 @@ const HomePage = () => {
         </ScrollPrompt>
       </HeroContent>
       <ContentWrapper>
-        {/* <PromptText>
-          {t('specialOffer.title')}
-        </PromptText> */}
+        <SectionDescription>
+          <h2>{t('carDisplay.featured.title')}</h2>
+          <p>{t('carDisplay.featured.description')}</p>
+        </SectionDescription>
         <DesktopCarDisplay cars={favouriteCars} onClick={handleCarClick} />
         <SpecialOffer />
         <WhyChooseUs />

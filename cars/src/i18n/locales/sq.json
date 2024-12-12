@@ -48,24 +48,26 @@
     "pickupDate": "Data e Marrjes",
     "dropoffDate": "Data e Kthimit",
     "findCar": "Gjej Makinën",
-    "availableToday": "Makinat e Disponueshme Sot"
+    "availableToday": "Makinat e Disponueshme Sot",
+    "filter": "Filtro Makinat",
+    "clear": "Pastro Filtrin"
   },
   "reviews": {
     "title": "Çfarë Thonë Klientët Tanë",
     "reviewers": {
       "john": {
         "text": "Shërbim i mrekullueshëm! Makina ishte në gjendje perfekte dhe stafi ishte jashtëzakonisht i dobishëm. Do të marrë me qira përsëri!",
-        "name": "John Smith",
+        "name": "Marieta Cami",
         "date": "Mars 2024"
       },
       "maria": {
         "text": "Eksperienca më e mirë e marrjes së makinave me qira në Shqipëri. Procesi ishte i lehtë dhe çmimet ishin shumë konkurruese.",
-        "name": "Maria Garcia",
+        "name": "Marin Gjoni",
         "date": "Shkurt 2024"
       },
       "david": {
         "text": "Flotë e shkëlqyer makinash dhe shërbim profesional. E bëri udhëtimin tonë në Shqipëri të paharrueshëm!",
-        "name": "David Chen",
+        "name": "Yllka Ajdari",
         "date": "Janar 2024"
       }
     }
@@ -120,7 +122,11 @@
       "power": "Fuqia",
       "fuel": "Karburanti"
     },
-    "defaultImage": "Foto e makinës"
+    "defaultImage": "Foto e makinës",
+    "featured": {
+      "title": "Përzgjedhja jonë Premium",
+      "description": "Zbuloni koleksionin tonë të përzgjedhur të automjeteve premium, secili i zgjedhur për t'ju ofruar përzierjen e përkryer të komoditetit, stilit dhe performancës. Nga sedanët luksozë tek SUV-të versatile, këto automjete përfaqësojnë opsionet më të mira në flotën tonë."
+    }
   },
   "carsPage": {
     "title": "Flota Jonë",

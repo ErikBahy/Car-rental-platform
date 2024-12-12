@@ -3,6 +3,42 @@ const router = express.Router();
 const Reservation = require('../models/Reservation');
 const Car = require('../models/Car');
 
+// Move the available-cars route BEFORE any :id routes
+router.get('/available-cars', async (req, res) => {
+  try {
+    const { startDate, endDate } = req.query;
+    
+    if (!startDate || !endDate) {
+      return res.status(400).json({ message: 'Start and end dates are required' });
+    }
+
+    // Find all cars that don't have conflicting reservations
+    const cars = await Car.find();
+    const availableCars = [];
+
+    for (const car of cars) {
+      const conflicts = await Reservation.find({
+        carId: car._id,
+        status: { $in: ['pending', 'confirmed'] },
+        $or: [
+          {
+            pickupDate: { $lte: new Date(endDate) },
+            dropoffDate: { $gte: new Date(startDate) }
+          }
+        ]
+      });
+
+      if (conflicts.length === 0) {
+        availableCars.push(car);
+      }
+    }
+
+    res.json(availableCars);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+});
+
 // Get all reservations
 router.get('/', async (req, res) => {
   try {
